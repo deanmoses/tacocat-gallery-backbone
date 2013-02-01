@@ -12,7 +12,12 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
 		},
 		
 		getPhotoByPathComponent : function(pathComponent) {
-			return _.find(this.attributes.children, function(child){ 
+			console.log("getPhotoByPathComponent("+pathComponent+")");
+			console.log("this", this);
+			console.log("this.attributes", this.attributes);
+			console.log("this.attributes.children[0]", this.attributes.children[0]);
+			return _.find(this.attributes.children, function(child){
+				console.log("getPhotoByPathComponent("+pathComponent+"): looking at child.pathComponent: " + child.pathComponent);
 				return child.pathComponent == pathComponent;
 			});
 		}
@@ -78,7 +83,32 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
 
     });
     
-    var albumStore = Array();
+    /**
+     * Store of albums.
+     *
+     * TODO:  I thought this would be simply a Collection,
+     * but the Collection isn't downloading and saving
+     * albums like I thought it would.
+     */
+    gallery.albumStore = {
+    	// hash of albumPath -> album Model
+    	albums : [],
+    	
+    	getAlbum : function(path) {
+	    	//var album = gallery.app.models.albums.get(path);
+			var album = this.albums[path];
+			if (!album) {
+				console.log("album " + path + " isn't on client, fetching");
+				album = new Album({id : path});
+				album.fetch();
+				//gallery.app.models.albums.update([album]);
+				this.albums[path] = album;
+			}
+			console.log("retrieved album", album);
+			return album;
+    	}
+    };
+    
     
     /**
      * ROUTING
@@ -104,9 +134,10 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
 			
 			console.log("URL wants to view photo " + photoId + " in album " + albumPath);
 			
-			var album = albumStore[albumPath];
-			var photo = album.getPhotoByPathComponent(photoId);
+			var album = gallery.albumStore.getAlbum(albumPath);
 			console.log("Got album for photo", album);
+			
+			var photo = album.getPhotoByPathComponent(photoId);
 			console.log("Got photo", photo);
 			
 			var view = new gallery.backbone.views.Photo({
@@ -124,17 +155,8 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
 			// strip any trailing slash
 			path = path.replace(/\/$/, "");
 			//console.log("URL wants to view album " + path);
-			//var album = gallery.app.models.albums.get(path);
-			var album = albumStore[path];
-			if (!album) {
-				console.log("album " + path + " isn't on client, fetching");
-				album = new Album({id : path});
-				album.fetch();
-				//gallery.app.models.albums.update([album]);
-				albumStore[path] = album;
-			}
-			//console.log("retrieved album", album);
-
+			var album = gallery.albumStore.getAlbum(path);
+			
 			var view = new gallery.backbone.views.Main({
 				model: album,
 				el: $('#albums')
