@@ -49,7 +49,7 @@ define(['modules/fn'], function (fn) {
 	});
 	
 	/**
-	 * This SHOULD be a store of all the albums that have been 
+	 * TODO:  This SHOULD be a store of all the albums that have been 
 	 * downloaded, but it wasn't storing new models correctly.
 	 * 
 	 * So this isn't being used yet.
@@ -58,12 +58,8 @@ define(['modules/fn'], function (fn) {
 	var Albums = Backbone.Collection.extend({
 		model : Album
 	});
+	gallery.app.models.albums = new Albums();
 */
-	
-	/**
-	 * Store of all the albums
-	 */
-/* 	gallery.app.models.albums = new Albums(); */
 	
 	/**
      * Store of albums.
