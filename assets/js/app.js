@@ -1,19 +1,39 @@
-define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn, ContextMenu, Component) {
+define(['modules/fn'], function (fn) {
 	
 	//
 	// MODELS
 	//
 	
 	/**
-	 * A photo album's data.
+	 * Represents a photo.
+	 */
+	gallery.backbone.models.Photo = Backbone.Model.extend({
+	
+	
+	});
+	 
+	/**
+	 * Represents an album.
 	 *
 	 * Includes all data about child photos.
 	 * Includes child albums, but not the child album's photos.
 	 */
-	var Album = Backbone.Model.extend({
+	gallery.backbone.models.Album = Backbone.Model.extend({
 	
 		idAttribute: 'fullPath',
 		
+/*
+		relations: [{
+	        type: Backbone.HasMany,
+	        key: 'children',
+	        relatedModel: 'gallery.backbone.models.Photo',
+	        reverseRelation: {
+	            key: 'thread',
+	            includeInJSON: '_id',
+	        },
+	    }],
+*/
+    
 		url : function() {
 			//console.log('album url() called');
 			return "http://tacocat.com/pictures/main.php?g2_view=json.Album&album=" + this.id;
@@ -28,24 +48,55 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
 		}
 	});
 	
-	/*
+	/**
 	 * This SHOULD be a store of all the albums that have been 
 	 * downloaded, but it wasn't storing new models correctly.
+	 * 
+	 * So this isn't being used yet.
 	 */
+/*
 	var Albums = Backbone.Collection.extend({
 		model : Album
 	});
+*/
 	
 	/**
 	 * Store of all the albums
 	 */
-	gallery.app.models.albums = new Albums();
+/* 	gallery.app.models.albums = new Albums(); */
 	
+	/**
+     * Store of albums.
+     *
+     * TODO:  I thought this would be simply a Collection,
+     * but the Collection isn't downloading and saving
+     * albums like I thought it would.
+     */
+    gallery.albumStore = {
+    	// hash of albumPath, like '2010/01_31' to album Model
+    	albums : [],
+    	
+    	// retrieve an album model by full path, like '2010/01_31'
+    	getAlbum : function(path) {
+	    	//var album = gallery.app.models.albums.get(path);
+			var album = this.albums[path];
+			if (!album) {
+				console.log("album " + path + " isn't on client, fetching");
+				album = new gallery.backbone.models.Album({fullPath : path});
+				album.fetch();
+				//gallery.app.models.albums.update([album]);
+				this.albums[path] = album;
+			}
+			console.log("retrieved album " + path, album);
+			return album;
+    	}
+    };
+    
 	//
 	// VIEWS
 	//
 
-	/*
+	/**
 	 * Display an album
 	 */
     gallery.backbone.views.Album = Backbone.View.extend({
@@ -71,6 +122,9 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
         }
     });
     
+    /**
+     * Display an individual photo
+     */
     gallery.backbone.views.Photo = Backbone.View.extend({
 	    
         render: function() {
@@ -81,38 +135,11 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
         }
     });
     
-    /**
-     * Store of albums.
-     *
-     * TODO:  I thought this would be simply a Collection,
-     * but the Collection isn't downloading and saving
-     * albums like I thought it would.
-     */
-    gallery.albumStore = {
-    	// hash of albumPath, like '2010/01_31' to album Model
-    	albums : [],
-    	
-    	// retrieve an album model by full path, like '2010/01_31'
-    	getAlbum : function(path) {
-	    	//var album = gallery.app.models.albums.get(path);
-			var album = this.albums[path];
-			if (!album) {
-				console.log("album " + path + " isn't on client, fetching");
-				album = new Album({fullPath : path});
-				album.fetch();
-				//gallery.app.models.albums.update([album]);
-				this.albums[path] = album;
-			}
-			console.log("retrieved album " + path, album);
-			return album;
-    	}
-    };
+    //
+    // ROUTING
+    //
     
-    
-    /**
-     * ROUTING
-     */
-    var AppRouter = Backbone.Router.extend({
+    gallery.backbone.Router = Backbone.Router.extend({
 
 		routes: {
 			"v/*path.html" : "viewPhoto",
@@ -170,7 +197,7 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
 		
 	});
     
-    new AppRouter();
+    new gallery.backbone.Router();
     Backbone.history.start();
     
     
