@@ -4,6 +4,12 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
 	// MODELS
 	//
 	
+	/**
+	 * A photo album's data.
+	 *
+	 * Includes all data about child photos.
+	 * Includes child albums, but not the child album's photos.
+	 */
 	var Album = Backbone.Model.extend({
 	
 		idAttribute: 'fullPath',
@@ -22,6 +28,10 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
 		}
 	});
 	
+	/*
+	 * This SHOULD be a store of all the albums that have been 
+	 * downloaded, but it wasn't storing new models correctly.
+	 */
 	var Albums = Backbone.Collection.extend({
 		model : Album
 	});
@@ -69,22 +79,6 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
 	        this.$el.html(template(this.model));
 	        return this;
         }
-    });
-
-    gallery.backbone.views.Sidebar = Backbone.View.extend({
-
-        initialize: function() {
-
-            var _this = this;
-
-            _.bindAll(this);
-
-            this.setElement($('#page-layout-sidebar'));
-
-            // Vars
-            this.components = new Backbone.Collection();
-        }
-
     });
     
     /**
