@@ -5,6 +5,8 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
 	//
 	
 	var Album = Backbone.Model.extend({
+	
+		idAttribute: 'fullPath',
 		
 		url : function() {
 			//console.log('album url() called');
@@ -13,9 +15,6 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
 		
 		getPhotoByPathComponent : function(pathComponent) {
 			console.log("getPhotoByPathComponent("+pathComponent+")");
-			console.log("this", this);
-			console.log("this.attributes", this.attributes);
-			console.log("this.attributes.children[0]", this.attributes.children[0]);
 			return _.find(this.attributes.children, function(child){
 				console.log("getPhotoByPathComponent("+pathComponent+"): looking at child.pathComponent: " + child.pathComponent);
 				return child.pathComponent == pathComponent;
@@ -36,7 +35,10 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
 	// VIEWS
 	//
 
-    gallery.backbone.views.Main = Backbone.View.extend({
+	/*
+	 * Display an album
+	 */
+    gallery.backbone.views.Album = Backbone.View.extend({
 
         initialize: function() {
         	_.bindAll(this);
@@ -47,11 +49,13 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
         	//console.log("Main render");
         	this.$el.empty();
         	var template = Handlebars.compile( $('#thumbnail_template').html() );
-        	var _this = this;
+        	var html = "";
         	_.each(this.model.get("children"), function(subItem) {
         		//console.log("child", subItem);
-	        	_this.$el.append(template(subItem));
+	        	html += template(subItem);
         	});
+        	
+        	this.$el.html(html);
 
 	        return this;
         }
@@ -91,20 +95,21 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
      * albums like I thought it would.
      */
     gallery.albumStore = {
-    	// hash of albumPath -> album Model
+    	// hash of albumPath, like '2010/01_31' to album Model
     	albums : [],
     	
+    	// retrieve an album model by full path, like '2010/01_31'
     	getAlbum : function(path) {
 	    	//var album = gallery.app.models.albums.get(path);
 			var album = this.albums[path];
 			if (!album) {
 				console.log("album " + path + " isn't on client, fetching");
-				album = new Album({id : path});
+				album = new Album({fullPath : path});
 				album.fetch();
 				//gallery.app.models.albums.update([album]);
 				this.albums[path] = album;
 			}
-			console.log("retrieved album", album);
+			console.log("retrieved album " + path, album);
 			return album;
     	}
     };
@@ -125,20 +130,19 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
 			console.log("URL wants to edit photo " + path);
 		},
 		
-		viewPhoto: function(path) {
-			console.log("URL wants to view photo " + path);
-			
+		viewPhoto: function(path) {			
 			var pathParts = path.split("/");
 			var photoId = pathParts.pop();
 			var albumPath = pathParts.join("/");
 			
-			console.log("URL wants to view photo " + photoId + " in album " + albumPath);
+			console.log("URL router viewPhoto() photo " + photoId + " in album " + albumPath);
 			
 			var album = gallery.albumStore.getAlbum(albumPath);
-			console.log("Got album for photo", album);
+			console.log("URL router got album " + albumPath + " for photo " + photoId, album);
 			
 			var photo = album.getPhotoByPathComponent(photoId);
-			console.log("Got photo", photo);
+			console.log("URL router got photo " + photoId, photo);
+			if (!photo) throw "No photo with ID " + photoId;
 			
 			var view = new gallery.backbone.views.Photo({
 				model : photo,
@@ -157,7 +161,7 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
 			//console.log("URL wants to view album " + path);
 			var album = gallery.albumStore.getAlbum(path);
 			
-			var view = new gallery.backbone.views.Main({
+			var view = new gallery.backbone.views.Album({
 				model: album,
 				el: $('#albums')
 			});
@@ -166,7 +170,8 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
 		},
 		
 		notFound: function(path) {
-			console.log("Unknown path: " + path);
+			// retrieve the root album
+			this.viewAlbum("");
 		}
 		
 	});
