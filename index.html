@@ -1,0 +1,434 @@
+<html>
+
+    <head>
+        
+        <title>Dean, Lucie, Felix and Milo Moses</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link type="text/css" rel="stylesheet" href="assets/styles/css/main.css" />
+
+    </head>
+
+    <body id="dale-app">
+
+        <header class="header">
+            <div class="header-primary clearfix">
+            	 <div class="button-group float-right">
+                    <a href="#" class="button">&#x2039; Back</a>
+                </div>
+                <h1>Dean, Lucie, Felix and Milo Moses</h1>
+            </div>
+            <div class="header-secondary clearfix">
+                <div class="years">
+                   	<a href="#v/2013">2013</a>
+                    <a href="#v/2012">2012</a>
+                    <a href="#v/2011">2011</a>
+                    <a href="#v/2010">2010</a>
+                    <a href="#v/2009">2009</a>
+                    <a href="#v/2008">2008</a>
+                    <a href="#v/2007">2007</a>
+                    <a href="/pix/2006/index.php">2006</a>
+                    <a href="/pix/2005/index.php">2005</a>
+                    <a href="/pix/2004/index.php">2004</a>
+                    <a href="/pix/2003/index.php">2003</a>
+                    <a href="/pix/2002/index.php">2002</a>
+                    <a href="/pix/2001/index.php">2001</a>
+                </div>
+            </div>
+        </header>
+
+        <section class="page-layout clearfix" id="page-layout">
+
+            <section class="page-layout-main" id="page-layout-main">
+                
+            </section>
+
+            <aside class="page-layout-sidebar" id="page-layout-sidebar">
+
+            </aside>
+
+        </section>
+        
+        <section id="helloHere">
+
+        </section>
+        
+        <section id="albums">
+
+        </section>
+
+        <script src="assets/js/lib/curl.min.js"></script>
+
+        <script>
+            window.gallery =  {
+                app: {
+                    models: {},
+                    collections: {},
+                    views: {}
+                },
+                backbone: {
+                    models: {},
+                    collections: {},
+                    views: {}
+                },
+	            curlConfig: {
+	                baseUrl: 'assets/js',
+	                paths: {
+	                    'jquery': 'lib/jquery',
+	                    'jqueryUi': 'lib/jquery-ui-1.10.0.custom.js',
+	                    'lodash': 'lib/lodash.custom.min.js',
+	                    'backbone': 'lib/backbone',
+	                    'backboneModelBinder': 'lib/backbone.modelBinder.js',
+	                    'handlebars': 'lib/handlebars'
+	                },
+	                preloads: [
+	                	'js!jquery!order', 
+	                	'js!jqueryUi!order', 
+	                	'js!lodash!order', 
+	                	'js!backbone!order', 
+	                	'js!backboneModelBinder!order', 
+	                	'js!handlebars!order'
+	                ]
+	            }
+	        };
+
+	        curl(gallery.curlConfig, ['app'], function(App) {});
+        </script>
+        
+        <script type="text/x-handlebars" id="thumbnail_template">
+            <div class="thumbnail">
+				<a href="#{{url}}"><img src="{{thumbnail.url}}" width="{{thumbnail.width}}px" height="{{thumbnail.height}}px" alt="{{thumbnail.title}}"/></a>
+				<a href="#{{url}}" style="width:{{thumbnail.width}}px">{{title}}</a>
+			</div>
+        </script>
+        
+
+        <script type="text/x-handlebars" id="photo_template">
+        	<div class="photo">
+	            <h1>{{title}}</h1>
+	            <div>{{{description}}}</div>
+	            <img src="http://www.tacocat.com/pictures/d/{{id}}-3/{{pathComponent}}" style="max-width: {{width}}px; max-height: {{height}}px" />
+        	</div>
+        </script>
+
+        <script type="text/x-handlebars" id="template-context-menu">
+            <div class="context-menu-inner">
+                {{#each viewTemplates}}
+                    {{{this}}}
+                {{/each}}
+            </div>
+        </script>
+
+        <script type="text/x-handlebars" id="template-context-menu-items">
+            <div class="context-menu-view">
+                <div class="context-menu-title">{{title}}</div>
+                <div class="context-menu-content">
+                    <ul class="context-menu-items">
+                        {{#if quickFind }}
+                        <li class="item quick-find">
+                            <input type="text" placeholder="Quick Find" />
+                        </li>
+                        {{/if}}
+                        {{#each items}}
+                        <li class="item menu-item">
+                            <a href="#" class="icon {{icon}} {{#if contextMenuTemplateId}}view-next{{/if}}" {{#if contextMenuTemplateId}}data-context-menu-template-id="{{contextMenuTemplateId}}"{{/if}} {{#if templateId}}data-template-id="{{templateId}}"{{/if}}>{{label}}</a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/x-handlebars" id="template-component">
+            <div class="component-inner">
+                <div class="circle-button icon icon-plus add"></div>
+            </div>
+            <div class="button-group component-actions">
+                <div class="circle-button icon icon-edit edit"></div>
+                <div class="circle-button icon icon-remove remove" data-model="state"></div>
+            </div>
+            <div class="component-drag hidden" data-model="sortable"></div>
+        </script>
+
+        <script type="text/x-handlebars" id="template-component-add">
+            <div class="circle-button icon icon-plus add"></div>
+        </script>
+
+        <script type="text/x-handlebars" id="template-component-feed">
+            <ul class="feed">
+                <li class="publisher">
+                    <ul class="publisher-actions">
+                        <li class="publisher-action"><a href="" class="icon icon-message">Post</a></li>
+                        <li class="publisher-action"><a href="" class="icon icon-file">File</a></li>
+                        <li class="publisher-action"><a href="" class="icon icon-link">Link</a></li>
+                        <li class="publisher-action"><a href="" class="icon icon-analytics">Poll</a></li>
+                        <li class="publisher-action" style="display: none;" id="contactIcon"><a href="" class="icon icon-profile">Contact</a></li>
+                    </ul>
+                    <input type="text" class="publisher-input" />
+                    <a href="#" class="button success publisher-share">Share</a>
+                </li>
+                <li class="feed-item clearfix">
+                    <div class="feed-item-avatar">
+                        <img src="assets/img/avatar.png" class="avatar" />
+                    </div>
+                    <div class="feed-item-content-wrapper">
+                        <a href="#" class="feed-item-title">Sandra Reinhart</a>
+                        <p class="feed-item-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, <a href="#">@Jacob Smithfield</a>, <a href="#">@Brian Redpath</a> sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci.</p>
+                        <ul class="feed-item-feed clearfix">
+                            <li class="feed-item clearfix">
+                                <div class="feed-item-avatar">
+                                    <img src="assets/img/avatar.png" class="avatar" />
+                                </div>
+                                <div class="feed-item-content-wrapper">
+                                    <a href="#" class="feed-item-title">Sandra Reinhart</a>
+                                    <p class="feed-item-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, <a href="#">@Jacob Smithfield</a>, <a href="#">@Brian Redpath</a> sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="feed-item clearfix">
+                    <div class="feed-item-avatar">
+                        <img src="assets/img/avatar.png" class="avatar" />
+                    </div>
+                    <div class="feed-item-content-wrapper">
+                        <a href="#" class="feed-item-title">Sandra Reinhart</a>
+                        <p class="feed-item-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, <a href="#">@Jacob Smithfield</a>, <a href="#">@Brian Redpath</a> sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci.</p>
+                    </div>
+                </li>
+            </ul>
+        </script>
+
+        <script type="text/x-handlebars" id="template-context-menu-publisher-properties">
+            <div class="context-menu-view">
+                <div class="context-menu-title"><a href="#" class="icon icon-arrow view-previous"><a/>Publisher Properties</div>
+                <div class="context-menu-content properties">
+                    <div class="field">
+                        <label><a class="required">*</a> Title</label>
+                        <input type="text" value="Chatter Feed Template" />
+                    </div>
+
+                </div>
+                <div class="context-menu-content">
+                    <div class="context-menu-section-title">Publisher Actions</div>
+                    <ul class="context-menu-items">
+                        {{#each items}}
+                        <li class="item menu-item">
+                            <a href="#" class="icon {{icon}} {{#if contextMenuTemplateId}}view-next{{/if}}" {{#if contextMenuTemplateId}}data-context-menu-template-id="{{contextMenuTemplateId}}"{{/if}} {{#if templateId}}data-template-id="{{templateId}}"{{/if}}>{{label}}</a>
+                        </li>
+                    {{/each}}
+                    </ul>
+                </div>
+                <div class="context-menu-content properties add-item">
+                     <div class="circle-button icon icon-plus add" onclick="$('#contactIcon').show();"></div>
+                </div>
+                <div class="context-menu-footer">
+                    <a class="remove icon icon-remove disabled">Not Removable</a>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/x-handlebars" id="template-component-followers">
+            <h3>Followers</h3>
+            <ul class="avatar-list">
+                <li class="avatar-list-item"><img src="assets/img/avatar.png" /></li>
+                <li class="avatar-list-item"><img src="assets/img/avatar.png" /></li>
+                <li class="avatar-list-item"><img src="assets/img/avatar.png" /></li>
+                <li class="avatar-list-item"><img src="assets/img/avatar.png" /></li>
+                <li class="avatar-list-item"><img src="assets/img/avatar.png" /></li>
+                <li class="avatar-list-item"><img src="assets/img/avatar.png" /></li>
+            </ul>
+        </script>
+
+        <script type="text/x-handlebars" id="template-context-menu-followers-properties">
+            <div class="context-menu-view">
+                <div class="context-menu-title"><a href="#" class="icon icon-arrow view-previous"><a/>Followers Properties</div>
+                <div class="context-menu-content properties">
+                    <div class="field">
+                        <label><a class="required">*</a> Title</label>
+                        <input type="text" value="Followers" />
+                    </div>
+
+                    <div class="field">
+                        <label><a class="required">*</a> Size</label>
+                        <div class="radio-group">
+                            <a class="radio">Long</a>
+                            <a class="radio active">Short</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="context-menu-footer">
+                    <a href="#" class="remove icon icon-remove">Remove</a>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/x-handlebars" id="template-component-following">
+            <h3>Following</h3>
+            <ul class="avatar-list">
+                <li class="avatar-list-item"><img src="assets/img/avatar.png" /></li>
+                <li class="avatar-list-item"><img src="assets/img/avatar.png" /></li>
+                <li class="avatar-list-item"><img src="assets/img/avatar.png" /></li>
+                <li class="avatar-list-item"><img src="assets/img/avatar.png" /></li>
+                <li class="avatar-list-item"><img src="assets/img/avatar.png" /></li>
+                <li class="avatar-list-item"><img src="assets/img/avatar.png" /></li>
+            </ul>
+        </script>
+
+        <script type="text/x-handlebars" id="template-context-menu-following-properties">
+            <div class="context-menu-view">
+                <div class="context-menu-title"><a href="#" class="icon icon-arrow view-previous"><a/>Following Properties</div>
+                <div class="context-menu-content properties">
+                    <div class="field">
+                        <label><a class="required">*</a> Title</label>
+                        <input type="text" value="Following" />
+                    </div>
+
+                    <div class="field">
+                        <label><a class="required">*</a> Size</label>
+                        <div class="radio-group">
+                            <a class="radio">Long</a>
+                            <a class="radio active">Short</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="context-menu-footer">
+                    <a href="#" class="remove icon icon-remove">Remove</a>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/x-handlebars" id="template-component-tasks">
+            <h3>Tasks</h3>
+            <ul class="task-list">
+                <li class="task-list-item"><a class="checkbox"></a> Follow up with John Smithfield</li>
+                <li class="task-list-item"><a class="checkbox"></a> Talk about contract with Ted Crisp</li>
+                <li class="task-list-item"><a class="checkbox"></a> Follow up with Ari Sheffield at Pepsi Co.</li>
+                <li class="task-list-item"><a class="checkbox"></a> Follow up with Ted Crisp at Acme Inc</li>
+            </ul>
+        </script>
+
+        <script type="text/x-handlebars" id="template-context-menu-tasks-properties">
+            <div class="context-menu-view">
+                <div class="context-menu-title"><a href="#" class="icon icon-arrow view-previous"><a/>Tasks Properties</div>
+                <div class="context-menu-content properties">
+                    <div class="field">
+                        <label><a class="required">*</a> Title</label>
+                        <input type="text" value="Tasks" />
+                    </div>
+
+                    <div class="field">
+                        <label><a class="required">*</a> Size</label>
+                        <div class="radio-group">
+                            <a class="radio">Long</a>
+                            <a class="radio active">Short</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="context-menu-footer">
+                    <a href="#" class="remove icon icon-remove">Remove</a>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/x-handlebars" id="template-component-analytics">
+            <h3>Analytics</h3>
+            <img src="./assets/img/analytics.png" />
+        </script>
+
+        <script type="text/x-handlebars" id="template-context-menu-analytics-properties">
+            <div class="context-menu-view">
+                <div class="context-menu-title"><a href="#" class="icon icon-arrow view-previous"><a/>Analytics Properties</div>
+                <div class="context-menu-content properties">
+                    <div class="field">
+                        <label><a class="required">*</a> Title</label>
+                        <input type="text" value="Analytics" />
+                    </div>
+                </div>
+                <div class="context-menu-footer">
+                    <a href="#" class="remove icon icon-remove">Remove</a>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/x-handlebars" id="template-component-radian6">
+            <h3>Topic Analysis</h3>
+            <img src="./assets/img/chart-pie-icon.png" />
+        </script>
+
+        <script type="text/x-handlebars" id="template-context-menu-radian6-properties">
+            <div class="context-menu-view">
+                <div class="context-menu-title"><a href="#" class="icon icon-arrow view-previous"><a/>Topic Analysis Properties</div>
+                <div class="context-menu-content properties">
+                    <div class="field">
+                        <label><a class="required">*</a> Title</label>
+                        <input type="text" value="Topic Analysis" />
+                    </div>
+                    <div class="field">
+                        <label><a class="required">*</a> Keywords</label>
+                        <input type="text" value="" />
+                    </div>
+                    <div class="field">
+                        <label><a class="required"></a> Represent As</label>
+                        <div class="radio-group">
+                            <a class="radio active">Pie</a>
+                            <a class="radio">Bar</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="context-menu-footer">
+                    <a href="#" class="remove icon icon-remove">Remove</a>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/x-handlebars" id="template-component-groups">
+            <h3>Groups</h3>
+            <ul class="avatar-list">
+                <li class="avatar-list-item avatar-list-item-info">
+                    <img src="assets/img/avatar.png" />
+                    <div class="info">
+                        <em>Product Intelligence</em>
+                        243 members
+                    </div>
+                </li>
+                <li class="avatar-list-item avatar-list-item-info">
+                    <img src="assets/img/avatar.png" />
+                    <div class="info">
+                        <em>Sales Engineers</em>
+                        129 members
+                    </div>
+                </li>
+                <li class="avatar-list-item avatar-list-item-info">
+                    <img src="assets/img/avatar.png" />
+                    <div class="info">
+                        <em>Sales Tips and Tricks</em>
+                        934 members
+                    </div>
+                </li>
+            </ul>
+        </script>
+
+        <script type="text/x-handlebars" id="template-context-menu-groups-properties">
+            <div class="context-menu-view">
+                <div class="context-menu-title"><a href="#" class="icon icon-arrow view-previous"><a/>Groups Properties</div>
+                <div class="context-menu-content properties">
+                    <div class="field">
+                        <label><a class="required">*</a> Title</label>
+                        <input type="text" value="Groups" />
+                    </div>
+                    <div class="field">
+                        <label><a class="required">*</a> Number of Groups</label>
+                        <input type="text" value="3" />
+                    </div>
+                </div>
+                <div class="context-menu-footer">
+                    <a href="#" class="remove icon icon-remove">Remove</a>
+                </div>
+            </div>
+        </script>
+
+    </body>
+
+</html>

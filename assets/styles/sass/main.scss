@@ -1,0 +1,109 @@
+@import "compass/reset";
+@import "compass/css3";
+@import "fonts";
+@import "utilities";
+
+$titleColor: #fff;
+
+html {
+    font-family: "HelveticaNeue", Arial, sans-serif;
+    font-size: 14px;
+    color: $colorTextPrimary;
+
+    -webkit-font-smoothing: antialiased;
+}
+
+a,
+a:before {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover,
+a:hover:before,
+a:hover:after,
+a.active,
+a.active:before,
+a.active:after {
+    //color: $colorPrimaryHover !important;
+}
+
+.header {
+
+    .header-primary {
+        position: relative;
+        padding: 1em;
+        background-color: $colorDarkGraySecondary;
+        border-top: 1px solid rgba(255,255,255,.1);
+        border-bottom: 1px solid $colorBorderDarkPrimary;
+        
+        h1 {
+            font-family: 'VAGRoundedBT-Regular';
+		    font-size: 1.8em;
+		    color: $titleColor;
+		    letter-spacing: -.02em;
+	        cursor: pointer;
+        }
+
+    }
+
+    .header-secondary {
+        padding: .75em 1em;
+        background-color: $colorDarkGrayPrimary;
+        border-bottom: 1px solid $colorBorderDarkPrimary;
+    }
+    
+	.years {
+		color: $titleColor;
+
+		:not(:last-child):after {
+   			content: " | ";
+   			color: #666;
+   		}
+   		
+   		a:hover {
+	   		cursor: pointer;
+   		}
+	}
+}
+
+.thumbnail {
+	margin: 1em;
+	display: inline-block;
+	
+	img {
+		border: solid black 1px;
+	}
+	a {
+		display: block;
+	}
+	a:last-child {
+		font-weight: bold;
+		text-align: justify;
+		text-justify: newspaper;
+	}
+}
+
+.photo {
+	h1 {
+		margin-left: 0.2em;
+	    margin-bottom: .3em;
+	    font-size: 2.5em;
+	    font-family: 'HelveticaNeue-Light';
+	    color: #999999;
+	}
+	div {
+		font-family: Verdana;
+		font-size: 1.3em;
+		margin: 0 0.4em;
+		
+		p {
+			margin-top: 0.4em;
+		}
+	}
+	img {
+		margin-top: 0.4em;
+		border: solid black 1px;
+		width: 100%;
+	}
+}
