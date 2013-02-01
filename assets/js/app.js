@@ -24,7 +24,7 @@ define(['modules/fn', 'modules/context-menu', 'modules/component'], function (fn
 	});
 	
 	var Albums = Backbone.Collection.extend({
-		model : Album
+		model : Album   
 	});
 	
 	/**
