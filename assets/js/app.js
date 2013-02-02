@@ -21,18 +21,6 @@ define(['modules/fn'], function (fn) {
 	gallery.backbone.models.Album = Backbone.Model.extend({
 	
 		idAttribute: 'fullPath',
-		
-/*
-		relations: [{
-	        type: Backbone.HasMany,
-	        key: 'children',
-	        relatedModel: 'gallery.backbone.models.Photo',
-	        reverseRelation: {
-	            key: 'thread',
-	            includeInJSON: '_id',
-	        },
-	    }],
-*/
     
 		url : function() {
 			//console.log('album url() called');
