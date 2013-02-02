@@ -49,18 +49,30 @@ define(['modules/fn'], function (fn) {
 		},
 		
 		getNextPhoto : function(pathComponent) {
-			console.log("album.getNextPhoto("+pathComponent+")");
+			//console.log("album.getNextPhoto("+pathComponent+")");
 			var foundCurrentPhoto = false;
 			return _.find(this.attributes.children, function(child) {
-				console.log("album.getNextPhoto("+pathComponent+"): looking at child.pathComponent: " + child.pathComponent);
+				//console.log("album.getNextPhoto("+pathComponent+"): looking at child.pathComponent: " + child.pathComponent);
 				if (foundCurrentPhoto) {
-					console.log("album.getNextPhoto("+pathComponent+"): " + child.pathComponent + " is the next photo!");
+					//console.log("album.getNextPhoto("+pathComponent+"): " + child.pathComponent + " is the next photo!");
 					return true;
 				}
 				else if (child.pathComponent == pathComponent) {
 					foundCurrentPhoto = true;
 				}
 			});
+		},
+		
+		getPrevPhoto : function(pathComponent) {
+			var prevPhoto;
+			_.find(this.attributes.children, function(child) {
+				if (child.pathComponent == pathComponent) {
+					return true;
+				}
+				prevPhoto = child;
+			});
+			
+			return prevPhoto;
 		}
 	});
 	
@@ -198,6 +210,7 @@ define(['modules/fn'], function (fn) {
 			// set the photo's album on the photo so the view can use that info
 			photo.album = album.attributes;
 			photo.nextPhoto = album.getNextPhoto(photoId);
+			photo.prevPhoto = album.getPrevPhoto(photoId);
 			var view = new gallery.backbone.views.PhotoPage({
 				model : photo,
 				el: $('#page')
