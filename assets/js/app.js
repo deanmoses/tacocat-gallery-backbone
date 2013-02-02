@@ -36,7 +36,8 @@ define(['modules/fn'], function (fn) {
     
 		url : function() {
 			//console.log('album url() called');
-			return "http://tacocat.com/pictures/main.php?g2_view=json.Album&album=" + this.id;
+			//return "http://tacocat.com/pictures/main.php?g2_view=json.Album&album=" + this.id;
+			return "file:///Users/dmoses/Sites/p/mock/album.json.txt";
 		},
 		
 		getPhotoByPathComponent : function(pathComponent) {
