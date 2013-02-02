@@ -11,36 +11,10 @@
     </head>
 
     <body>
+	    
+	    <div id="page">
 
-        <header class="header">
-            <div class="header-primary clearfix">
-            	 <div class="button-group float-right">
-                    <a href="#" class="button">&#x2039; Back</a>
-                </div>
-                <h1>Dean, Lucie, Felix and Milo Moses</h1>
-            </div>
-            <div class="header-secondary clearfix">
-                <div class="years">
-                   	<a href="#v/2013">2013</a>
-                    <a href="#v/2012">2012</a>
-                    <a href="#v/2011">2011</a>
-                    <a href="#v/2010">2010</a>
-                    <a href="#v/2009">2009</a>
-                    <a href="#v/2008">2008</a>
-                    <a href="#v/2007">2007</a>
-                    <a href="/pix/2006/index.php">2006</a>
-                    <a href="/pix/2005/index.php">2005</a>
-                    <a href="/pix/2004/index.php">2004</a>
-                    <a href="/pix/2003/index.php">2003</a>
-                    <a href="/pix/2002/index.php">2002</a>
-                    <a href="/pix/2001/index.php">2001</a>
-                </div>
-            </div>
-        </header>
-        
-        <section id="albums">
-
-        </section>
+	    </div>
 
         <script src="assets/js/lib/curl.min.js"></script>
 
@@ -80,6 +54,65 @@
 	        curl(gallery.curlConfig, ['app'], function(App) {});
         </script>
         
+        <script type="text/x-handlebars" id="root_album_header_template">
+        	<header class="header">
+	            <div class="header-primary clearfix">
+	                <h1>Dean, Lucie, Felix and Milo Moses</h1>
+	            </div>
+	        </header>
+	        <section class="album">
+	        	{{#if description}}<section class="album-description">{{{description}}}</section>{{/if}}
+	        	<section id="thumbnails"></section>
+	        </section>
+        </script>
+        
+        <script type="text/x-handlebars" id="year_album_header_template">
+        	<header class="header">
+	            <div class="header-primary clearfix">
+	            	<div class="button-group float-right">
+	                    <a href="#v/" class="button">&#x2039; Back</a>
+	                </div>
+	                <h1><a href="#v/">{{title}}</a></h1>
+	            </div>
+	            <div class="header-secondary clearfix">
+	                <div class="years">
+	                   	<a href="#v/2013">2013</a>
+	                    <a href="#v/2012">2012</a>
+	                    <a href="#v/2011">2011</a>
+	                    <a href="#v/2010">2010</a>
+	                    <a href="#v/2009">2009</a>
+	                    <a href="#v/2008">2008</a>
+	                    <a href="#v/2007">2007</a>
+	                    <a href="/pix/2006/index.php">2006</a>
+	                    <a href="/pix/2005/index.php">2005</a>
+	                    <a href="/pix/2004/index.php">2004</a>
+	                    <a href="/pix/2003/index.php">2003</a>
+	                    <a href="/pix/2002/index.php">2002</a>
+	                    <a href="/pix/2001/index.php">2001</a>
+	                </div>
+	            </div>
+	        </header>
+	        <section class="album">
+	        	{{#if description}}<section class="album-description">{{{description}}}</section>{{/if}}
+	        	<section id="thumbnails"></section>
+	        </section>
+        </script>
+        
+        <script type="text/x-handlebars" id="week_album_header_template">
+        	<header class="header">
+	            <div class="header-primary clearfix">
+	            	<div class="button-group float-right">
+	                    <a href="#v/{{parentAlbumPath}}" class="button">&#x2039; Back</a>
+	                </div>
+	                <h1><a href="#v/{{parentAlbumPath}}">{{title}}</a></h1>
+	            </div>
+	        </header>
+	        <section class="album">
+	        	{{#if description}}<section class="album-description">{{{description}}}</section>{{/if}}
+	        	<section id="thumbnails"></section>
+	        </section>
+        </script>
+        
         <script type="text/x-handlebars" id="thumbnail_template">
             <div class="thumbnail">
 				<a href="#{{url}}"><img src="{{thumbnail.url}}" width="{{thumbnail.width}}px" height="{{thumbnail.height}}px" alt="{{thumbnail.title}}"/></a>
@@ -88,11 +121,20 @@
         </script>
         
         <script type="text/x-handlebars" id="photo_template">
-        	<div class="photo">
-	            <h1>{{title}}</h1>
+        	<header class="header">
+	            <div class="header-primary clearfix">
+	            	 <div class="button-group float-right">
+	            	 	<a class="button" {{#if nextPhoto}}href="#{{prevPhoto.url}}"{{/if}}>&#x2039; Prev</a>
+	                    <a class="button" href="#{{album.url}}">Album</a>
+	                    <a class="button" {{#if nextPhoto}}href="#{{nextPhoto.url}}"{{/if}}>Next &#x2039;</a>
+	                </div>
+	                <h1><a href="#v/">{{title}}</a></h1>
+	            </div>
+	        </header>
+        	<section class="photo">
 	            <div>{{{description}}}</div>
 	            <img src="http://www.tacocat.com/pictures/d/{{id}}-3/{{pathComponent}}" style="max-width: {{width}}px; max-height: {{height}}px" />
-        	</div>
+        	</section>
         </script>
 
     </body>

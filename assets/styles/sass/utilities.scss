@@ -57,13 +57,28 @@ $colorTextPrimary: #2a2929;
     background-color: $colorDarkGraySecondary;
     border: 1px solid $colorBorderDarkPrimary;
     border-radius: 3px;
-    cursor: pointer;
-
-    color: #ffffff;
     text-align: center;
 
     @include box-shadow( 0 2px 3px 0 rgba(0,0,0,.25) );
-    @include transition( background-color 300ms );
+    
+    &[href] {
+    	color: #ffffff;
+    	cursor: pointer;
+	    @include transition( background-color 300ms );
+	    
+	    &:hover {
+	        background-color: tint($colorDarkGraySecondary, 10%);
+	    }
+    }
+    
+    &:not([href]) {
+    	color: #aaa;
+		cursor: default;
+		:hover {
+			cursor: default;
+			background-color: inherit;
+		}
+	}
 
     &.active {
         
@@ -78,10 +93,6 @@ $colorTextPrimary: #2a2929;
         height: 4px;
         border-top: 1px solid rgba(255,255,255,.1);
         border-radius: 3px;
-    }
-
-    &:hover {
-        background-color: tint($colorDarkGraySecondary, 10%);
     }
 
     &.success {

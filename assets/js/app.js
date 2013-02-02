@@ -7,7 +7,7 @@ define(['modules/fn'], function (fn) {
 	/**
 	 * Represents a photo.
 	 */
-	gallery.backbone.models.Photo = Backbone.Model.extend({
+	gallery.backbone.models.PhotoPage = Backbone.Model.extend({
 	
 	
 	});
@@ -36,16 +36,43 @@ define(['modules/fn'], function (fn) {
     
 		url : function() {
 			//console.log('album url() called');
-			//return "http://tacocat.com/pictures/main.php?g2_view=json.Album&album=" + this.id;
-			return "file:///Users/dmoses/Sites/p/mock/album.json.txt";
+			
+			var mock = false;
+			// if not mock, return real URL
+			if (!mock) {
+				return "http://tacocat.com/pictures/main.php?g2_view=json.Album&album=" + this.id;
+			}
+			// else if it's a sub album with photos
+			else if (this.id.indexOf("/") >= 0) {
+				return "file:///Users/dmoses/Sites/p/mock/album.json.txt";	
+			}
+			// else it's a year album
+			else {
+				return "file:///Users/dmoses/Sites/p/mock/album-year.json.txt";	
+			}
 		},
 		
 		getPhotoByPathComponent : function(pathComponent) {
 			console.log("getPhotoByPathComponent("+pathComponent+")");
 			return _.find(this.attributes.children, function(child){
-				console.log("getPhotoByPathComponent("+pathComponent+"): looking at child.pathComponent: " + child.pathComponent);
+				console.log("album.getPhotoByPathComponent("+pathComponent+"): looking at child.pathComponent: " + child.pathComponent);
 				return child.pathComponent == pathComponent;
 			});
+		},
+		
+		getNextPhoto : function(pathComponent) {
+			console.log("album.getNextPhoto("+pathComponent+")");
+			var foundCurrentPhoto = false;
+			var nextPhoto = _.find(this.attributes.children, function(child){
+				console.log("album.getNextPhoto("+pathComponent+"): looking at child.pathComponent: " + child.pathComponent);
+				if (foundCurrentPhoto) {
+					return true;
+				}
+				else if (child.pathComponent == pathComponent) {
+					foundCurrentPhoto = true;
+				}
+			});
+			return null;
 		}
 	});
 	
@@ -94,26 +121,44 @@ define(['modules/fn'], function (fn) {
 	//
 
 	/**
-	 * Display an album
+	 * Display an album page
 	 */
-    gallery.backbone.views.Album = Backbone.View.extend({
+    gallery.backbone.views.AlbumPage = Backbone.View.extend({
 
         initialize: function() {
-        	_.bindAll(this);
+        	_.bindAll(this, "render");
             this.listenTo(this.model, "change", this.render);
         },
         
         render: function() {
         	//console.log("Main render");
+        	
+        	// Blank the page
         	this.$el.empty();
-        	var template = Handlebars.compile( $('#thumbnail_template').html() );
+        		
+        	// Generate the album header HTML
+        	// We use a different template for different types of albums
+        	var headerTemplateId;
+        	if (this.model.attributes.albumType == "root") {
+	        	headerTemplateId = "#root_album_header_template";
+        	}
+        	else if (this.model.attributes.albumType == "year") {
+	        	headerTemplateId = "#year_album_header_template";
+        	}
+        	else {
+	        	headerTemplateId = "#week_album_header_template";
+        	}
+        	var headerTemplate = Handlebars.compile( $(headerTemplateId).html() );
+        	this.$el.html(headerTemplate(this.model.attributes));
+        	
+            // Generate the thumnails HTML
         	var html = "";
+        	var thumbnailTemplate = Handlebars.compile( $('#thumbnail_template').html() );
         	_.each(this.model.get("children"), function(subItem) {
         		//console.log("child", subItem);
-	        	html += template(subItem);
-        	});
-        	
-        	this.$el.html(html);
+	        	html += thumbnailTemplate(subItem);
+        	});	
+        	this.$("#thumbnails").html(html);
 
 	        return this;
         }
@@ -122,7 +167,7 @@ define(['modules/fn'], function (fn) {
     /**
      * Display an individual photo
      */
-    gallery.backbone.views.Photo = Backbone.View.extend({
+    gallery.backbone.views.PhotoPage = Backbone.View.extend({
 	    
         render: function() {
         	this.$el.empty();
@@ -159,12 +204,15 @@ define(['modules/fn'], function (fn) {
 			console.log("URL router got album " + albumPath + " for photo " + photoId, album);
 			
 			var photo = album.getPhotoByPathComponent(photoId);
-			console.log("URL router got photo " + photoId, photo);
 			if (!photo) throw "No photo with ID " + photoId;
+			console.log("URL router got photo " + photoId, photo);
 			
-			var view = new gallery.backbone.views.Photo({
+			// set the photo's album on the photo so the view can use that info
+			photo.album = album.attributes;
+			photo.nextPhoto = album.getNextPhoto(photoId);
+			var view = new gallery.backbone.views.PhotoPage({
 				model : photo,
-				el: $('#albums')
+				el: $('#page')
 			});
 			view.render();
 		},
@@ -174,14 +222,40 @@ define(['modules/fn'], function (fn) {
 		},
 		
 		viewAlbum: function(path) {
+			//console.log("Router.viewAlbum() for album " + path);
+			
 			// strip any trailing slash
 			path = path.replace(/\/$/, "");
-			//console.log("URL wants to view album " + path);
-			var album = gallery.albumStore.getAlbum(path);
 			
-			var view = new gallery.backbone.views.Album({
+			// Regularize path by getting rid of any preceding or trailing slashes
+			var pathParts = path.split("/");
+			var albumPath = pathParts.join("/");
+			
+			var album = gallery.albumStore.getAlbum(path);
+			if (!album) throw "No photo with ID " + photoId;
+			
+			// Figure out path to parent album
+			// if there's a slash, then it's a sub album
+			if (albumPath.indexOf("/") >=0) {
+				pathParts.pop();
+				album.attributes.parentAlbumPath = pathParts.join("/");
+				album.attributes.albumType = "week";
+			}
+			// else if the album path is not "", it's a year album
+			else if (albumPath.length > 0) {
+				album.attributes.parentAlbumPath = "";
+				album.attributes.albumType = "year";
+			}
+			// else this is the root album
+			else {
+				album.attributes.parentAlbumPath = null;
+				album.attributes.albumType = "root";
+			}
+			
+			// render the album
+			var view = new gallery.backbone.views.AlbumPage({
 				model: album,
-				el: $('#albums')
+				el: $('#page')
 			});
 			view.render();
 
@@ -197,7 +271,7 @@ define(['modules/fn'], function (fn) {
     new gallery.backbone.Router();
     Backbone.history.start();
     
-    
+    // Clicking on site header title takes you to root album
     $(".header h1").click(function() {
     	Backbone.history.navigate("v/", true)
 	});

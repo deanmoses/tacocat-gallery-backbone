@@ -1,0 +1,5 @@
+# SASS intermediate compile files
+*.scssc
+
+# SASS cache directory
+.sass-cache/
