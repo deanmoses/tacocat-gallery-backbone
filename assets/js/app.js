@@ -51,16 +51,16 @@ define(['modules/fn'], function (fn) {
 		getNextPhoto : function(pathComponent) {
 			console.log("album.getNextPhoto("+pathComponent+")");
 			var foundCurrentPhoto = false;
-			var nextPhoto = _.find(this.attributes.children, function(child){
+			return _.find(this.attributes.children, function(child) {
 				console.log("album.getNextPhoto("+pathComponent+"): looking at child.pathComponent: " + child.pathComponent);
 				if (foundCurrentPhoto) {
+					console.log("album.getNextPhoto("+pathComponent+"): " + child.pathComponent + " is the next photo!");
 					return true;
 				}
 				else if (child.pathComponent == pathComponent) {
 					foundCurrentPhoto = true;
 				}
 			});
-			return null;
 		}
 	});
 	
