@@ -5,6 +5,10 @@
 
 $titleColor: #fff;
 
+html, body, #page {
+	height: 100%;
+}
+
 html {
     font-family: "HelveticaNeue", Arial, sans-serif;
     font-size: 14px;
@@ -67,6 +71,16 @@ a.active:after {
 	}
 }
 
+.album-description {
+	font-family: Verdana;
+	font-size: 1.3em;
+	margin: 0.5em 0.9em;
+	
+	p {
+		margin-top: 0.4em;
+	}
+}
+
 .thumbnail {
 	margin: 1em;
 	display: inline-block;
@@ -85,17 +99,12 @@ a.active:after {
 }
 
 .photo {
-	h1 {
-		margin-left: 0.2em;
-	    margin-bottom: .3em;
-	    font-size: 2.5em;
-	    font-family: 'HelveticaNeue-Light';
-	    color: #999999;
-	}
-	div {
+	margin: 0 auto;
+	
+	.caption {
 		font-family: Verdana;
 		font-size: 1.3em;
-		margin: 0 0.4em;
+		margin: 0.5em 0.5em;
 		
 		p {
 			margin-top: 0.4em;
@@ -104,16 +113,48 @@ a.active:after {
 	img {
 		margin-top: 0.4em;
 		border: solid black 1px;
+		
+	}
+}
+
+.photo.landscape {
+	width: 100%;
+	
+	img {
 		width: 100%;
 	}
 }
 
-.album-description {
-	font-family: Verdana;
-	font-size: 1.3em;
-	margin: 0.5em 0.9em;
+.portraitPage  {
+	height: 100%;
+	margin: 0 auto;
+	position: relative;
+	display: inline;
 	
-	p {
-		margin-top: 0.4em;
+	.portraitInfo {
+		position: absolute;
+		background: rgba(245, 245, 245, 0.4);
+		width: 100%;
+		
+		h1 {
+            font-family: 'VAGRoundedBT-Regular';
+		    font-size: 1.8em;
+		    letter-spacing: -.02em;
+	        cursor: pointer;
+	        margin: 0.5em 0.5em;
+		}
+		
+		.button-group {
+			margin: 0.5em;
+		}
+	}
+	
+	img {
+		height: 100%;
 	}
 }
+
+html:not(:hover) .portraitPage .portraitInfo {
+	display: none;
+}
+

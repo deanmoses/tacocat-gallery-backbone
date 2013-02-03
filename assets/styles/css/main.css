@@ -1061,6 +1061,11 @@ input, textarea {
 }
 
 /* line 8, ../sass/main.scss */
+html, body, #page {
+  height: 100%;
+}
+
+/* line 12, ../sass/main.scss */
 html {
   font-family: "HelveticaNeue", Arial, sans-serif;
   font-size: 14px;
@@ -1068,14 +1073,14 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 
-/* line 17, ../sass/main.scss */
+/* line 21, ../sass/main.scss */
 a,
 a:before {
   color: inherit;
   text-decoration: none;
 }
 
-/* line 33, ../sass/main.scss */
+/* line 37, ../sass/main.scss */
 .header .header-primary {
   position: relative;
   padding: 1em;
@@ -1083,7 +1088,7 @@ a:before {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   border-bottom: 1px solid #1b1e21;
 }
-/* line 40, ../sass/main.scss */
+/* line 44, ../sass/main.scss */
 .header .header-primary h1 {
   font-family: 'VAGRoundedBT-Regular';
   font-size: 1.8em;
@@ -1091,78 +1096,117 @@ a:before {
   letter-spacing: -.02em;
   cursor: pointer;
 }
-/* line 50, ../sass/main.scss */
+/* line 54, ../sass/main.scss */
 .header .header-secondary {
   padding: 0.75em 1em;
   background-color: #383c41;
   border-bottom: 1px solid #1b1e21;
 }
-/* line 56, ../sass/main.scss */
+/* line 60, ../sass/main.scss */
 .header .years {
   color: white;
 }
-/* line 59, ../sass/main.scss */
+/* line 63, ../sass/main.scss */
 .header .years :not(:last-child):after {
   content: " | ";
   color: #666;
 }
-/* line 64, ../sass/main.scss */
+/* line 68, ../sass/main.scss */
 .header .years a:hover {
   cursor: pointer;
 }
 
-/* line 70, ../sass/main.scss */
+/* line 74, ../sass/main.scss */
+.album-description {
+  font-family: Verdana;
+  font-size: 1.3em;
+  margin: 0.5em 0.9em;
+}
+/* line 79, ../sass/main.scss */
+.album-description p {
+  margin-top: 0.4em;
+}
+
+/* line 84, ../sass/main.scss */
 .thumbnail {
   margin: 1em;
   display: inline-block;
 }
-/* line 74, ../sass/main.scss */
+/* line 88, ../sass/main.scss */
 .thumbnail img {
   border: solid black 1px;
 }
-/* line 77, ../sass/main.scss */
+/* line 91, ../sass/main.scss */
 .thumbnail a {
   display: block;
 }
-/* line 80, ../sass/main.scss */
+/* line 94, ../sass/main.scss */
 .thumbnail a:last-child {
   font-weight: bold;
   text-align: justify;
   text-justify: newspaper;
 }
 
-/* line 88, ../sass/main.scss */
-.photo h1 {
-  margin-left: 0.2em;
-  margin-bottom: .3em;
-  font-size: 2.5em;
-  font-family: 'HelveticaNeue-Light';
-  color: #999999;
-}
-/* line 95, ../sass/main.scss */
-.photo div {
-  font-family: Verdana;
-  font-size: 1.3em;
-  margin: 0 0.4em;
-}
-/* line 100, ../sass/main.scss */
-.photo div p {
-  margin-top: 0.4em;
+/* line 101, ../sass/main.scss */
+.photo {
+  margin: 0 auto;
 }
 /* line 104, ../sass/main.scss */
+.photo .caption {
+  font-family: Verdana;
+  font-size: 1.3em;
+  margin: 0.5em 0.5em;
+}
+/* line 109, ../sass/main.scss */
+.photo .caption p {
+  margin-top: 0.4em;
+}
+/* line 113, ../sass/main.scss */
 .photo img {
   margin-top: 0.4em;
   border: solid black 1px;
+}
+
+/* line 120, ../sass/main.scss */
+.photo.landscape {
+  width: 100%;
+}
+/* line 123, ../sass/main.scss */
+.photo.landscape img {
   width: 100%;
 }
 
-/* line 111, ../sass/main.scss */
-.album-description {
-  font-family: Verdana;
-  font-size: 1.3em;
-  margin: 0.5em 0.9em;
+/* line 128, ../sass/main.scss */
+.portraitPage {
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+  display: inline;
 }
-/* line 116, ../sass/main.scss */
-.album-description p {
-  margin-top: 0.4em;
+/* line 134, ../sass/main.scss */
+.portraitPage .portraitInfo {
+  position: absolute;
+  background: rgba(245, 245, 245, 0.4);
+  width: 100%;
+}
+/* line 139, ../sass/main.scss */
+.portraitPage .portraitInfo h1 {
+  font-family: 'VAGRoundedBT-Regular';
+  font-size: 1.8em;
+  letter-spacing: -.02em;
+  cursor: pointer;
+  margin: 0.5em 0.5em;
+}
+/* line 147, ../sass/main.scss */
+.portraitPage .portraitInfo .button-group {
+  margin: 0.5em;
+}
+/* line 152, ../sass/main.scss */
+.portraitPage img {
+  height: 100%;
+}
+
+/* line 157, ../sass/main.scss */
+html:not(:hover) .portraitPage .portraitInfo {
+  display: none;
 }

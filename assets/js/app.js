@@ -3,14 +3,6 @@ define(['modules/fn'], function (fn) {
 	//
 	// MODELS
 	//
-	
-	/**
-	 * Represents a photo.
-	 */
-	gallery.backbone.models.PhotoPage = Backbone.Model.extend({
-	
-	
-	});
 	 
 	/**
 	 * Represents an album.
@@ -171,7 +163,8 @@ define(['modules/fn'], function (fn) {
 	    
         render: function() {
         	this.$el.empty();
-        	var template = Handlebars.compile( $('#photo_template').html() );
+        	var templateId = (this.model.orientation == 'portrait') ? '#portrait_photo_template' : '#landscape_photo_template';
+        	var template = Handlebars.compile( $(templateId).html() );
 	        this.$el.html(template(this.model));
 	        return this;
         }
@@ -211,6 +204,7 @@ define(['modules/fn'], function (fn) {
 			photo.album = album.attributes;
 			photo.nextPhoto = album.getNextPhoto(photoId);
 			photo.prevPhoto = album.getPrevPhoto(photoId);
+			photo.orientation = (photo.height > photo.width) ? "portrait" : "landscape";
 			var view = new gallery.backbone.views.PhotoPage({
 				model : photo,
 				el: $('#page')
@@ -272,8 +266,7 @@ define(['modules/fn'], function (fn) {
     new gallery.backbone.Router();
     Backbone.history.start();
     
-    // Clicking on site header title takes you to root album
-    $(".header h1").click(function() {
-    	Backbone.history.navigate("v/", true)
+    Handlebars.registerHelper("addSome", function(num) {
+		return num + 2;
 	});
 });
