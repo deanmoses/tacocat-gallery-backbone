@@ -84,6 +84,7 @@ a.active:after {
 .thumbnail {
 	margin: 1em;
 	display: inline-block;
+	vertical-align: top;
 	
 	img {
 		border: solid black 1px;
@@ -93,47 +94,18 @@ a.active:after {
 	}
 	a:last-child {
 		font-weight: bold;
-		text-align: justify;
-		text-justify: newspaper;
 	}
 }
 
-.photo {
-	margin: 0 auto;
-	
-	.caption {
-		font-family: Verdana;
-		font-size: 1.3em;
-		margin: 0.5em 0.5em;
-		
-		p {
-			margin-top: 0.4em;
-		}
-	}
-	img {
-		margin-top: 0.4em;
-		border: solid black 1px;
-		
-	}
-}
-
-.photo.landscape {
+.photo-page {
 	width: 100%;
-	
-	img {
-		width: 100%;
-	}
-}
-
-.portraitPage  {
-	height: 100%;
-	margin: 0 auto;
+	margin: auto 0;
 	position: relative;
 	display: inline;
 	
-	.portraitInfo {
+	.photo-info {
 		position: absolute;
-		background: rgba(245, 245, 245, 0.4);
+		background: rgba(245, 245, 245, 0.8);
 		width: 100%;
 		
 		h1 {
@@ -147,14 +119,27 @@ a.active:after {
 		.button-group {
 			margin: 0.5em;
 		}
+		
+		.caption {
+			font-family: Verdana;
+			font-size: 1.3em;
+			margin: 0.5em 0.5em;
+			
+			p {
+				margin-top: 0.5em;
+			}
+		}
 	}
 	
-	img {
+	&.landscape img {
+		width: 100%;
+	}
+	
+	&.portrait img {
 		height: 100%;
 	}
 }
 
-html:not(:hover) .portraitPage .portraitInfo {
+html:not(:hover) .photo-page .photo-info {
 	display: none;
 }
-

@@ -163,8 +163,7 @@ define(['modules/fn'], function (fn) {
 	    
         render: function() {
         	this.$el.empty();
-        	var templateId = (this.model.orientation == 'portrait') ? '#portrait_photo_template' : '#landscape_photo_template';
-        	var template = Handlebars.compile( $(templateId).html() );
+        	var template = Handlebars.compile( $('#photo_template').html() );
 	        this.$el.html(template(this.model));
 	        return this;
         }

@@ -1131,82 +1131,66 @@ a:before {
 .thumbnail {
   margin: 1em;
   display: inline-block;
+  vertical-align: top;
 }
-/* line 88, ../sass/main.scss */
+/* line 89, ../sass/main.scss */
 .thumbnail img {
   border: solid black 1px;
 }
-/* line 91, ../sass/main.scss */
+/* line 92, ../sass/main.scss */
 .thumbnail a {
   display: block;
 }
-/* line 94, ../sass/main.scss */
+/* line 95, ../sass/main.scss */
 .thumbnail a:last-child {
   font-weight: bold;
-  text-align: justify;
-  text-justify: newspaper;
 }
 
-/* line 101, ../sass/main.scss */
-.photo {
-  margin: 0 auto;
-}
-/* line 104, ../sass/main.scss */
-.photo .caption {
-  font-family: Verdana;
-  font-size: 1.3em;
-  margin: 0.5em 0.5em;
-}
-/* line 109, ../sass/main.scss */
-.photo .caption p {
-  margin-top: 0.4em;
-}
-/* line 113, ../sass/main.scss */
-.photo img {
-  margin-top: 0.4em;
-  border: solid black 1px;
-}
-
-/* line 120, ../sass/main.scss */
-.photo.landscape {
+/* line 100, ../sass/main.scss */
+.photo-page {
   width: 100%;
-}
-/* line 123, ../sass/main.scss */
-.photo.landscape img {
-  width: 100%;
-}
-
-/* line 128, ../sass/main.scss */
-.portraitPage {
-  height: 100%;
-  margin: 0 auto;
+  margin: auto 0;
   position: relative;
   display: inline;
 }
-/* line 134, ../sass/main.scss */
-.portraitPage .portraitInfo {
+/* line 106, ../sass/main.scss */
+.photo-page .photo-info {
   position: absolute;
-  background: rgba(245, 245, 245, 0.4);
+  background: rgba(245, 245, 245, 0.8);
   width: 100%;
 }
-/* line 139, ../sass/main.scss */
-.portraitPage .portraitInfo h1 {
+/* line 111, ../sass/main.scss */
+.photo-page .photo-info h1 {
   font-family: 'VAGRoundedBT-Regular';
   font-size: 1.8em;
   letter-spacing: -.02em;
   cursor: pointer;
   margin: 0.5em 0.5em;
 }
-/* line 147, ../sass/main.scss */
-.portraitPage .portraitInfo .button-group {
+/* line 119, ../sass/main.scss */
+.photo-page .photo-info .button-group {
   margin: 0.5em;
 }
-/* line 152, ../sass/main.scss */
-.portraitPage img {
+/* line 123, ../sass/main.scss */
+.photo-page .photo-info .caption {
+  font-family: Verdana;
+  font-size: 1.3em;
+  margin: 0.5em 0.5em;
+}
+/* line 128, ../sass/main.scss */
+.photo-page .photo-info .caption p {
+  margin-top: 0.5em;
+}
+/* line 134, ../sass/main.scss */
+.photo-page.landscape img {
+  width: 100%;
+}
+/* line 138, ../sass/main.scss */
+.photo-page.portrait img {
   height: 100%;
 }
 
-/* line 157, ../sass/main.scss */
-html:not(:hover) .portraitPage .portraitInfo {
+/* line 143, ../sass/main.scss */
+html:not(:hover) .photo-page .photo-info {
   display: none;
 }
