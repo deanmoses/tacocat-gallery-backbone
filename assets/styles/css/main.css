@@ -1155,85 +1155,86 @@ a:before {
 }
 /* line 106, ../sass/main.scss */
 .photo-page .photo-info {
-  position: absolute;
+  position: relative;
   width: 100%;
-  background: rgba(245, 245, 245, 0.8);
+  background: #fff;
   border-bottom: solid black 2px;
+  padding: 0.5em;
 }
-/* line 112, ../sass/main.scss */
+/* line 113, ../sass/main.scss */
+.photo-page .photo-info .button-group {
+  margin: 0.5em 1em;
+}
+/* line 117, ../sass/main.scss */
 .photo-page .photo-info h1 {
   font-family: 'VAGRoundedBT-Regular';
   font-size: 1.8em;
   letter-spacing: -.02em;
   cursor: pointer;
-  margin: 0.5em 0.5em;
-}
-/* line 120, ../sass/main.scss */
-.photo-page .photo-info .button-group {
-  margin: 0.5em;
 }
 /* line 124, ../sass/main.scss */
 .photo-page .photo-info .caption {
   font-family: Verdana;
   font-size: 1.3em;
-  margin: 0.5em 0.5em;
-  position: relative;
+  max-width: 40em;
 }
-/* line 130, ../sass/main.scss */
+/* line 129, ../sass/main.scss */
 .photo-page .photo-info .caption p {
   margin-top: 0.5em;
 }
 /* line 134, ../sass/main.scss */
-.photo-page .photo-info .caption .admin-controls {
+.photo-page .photo-info .admin-controls {
   position: absolute;
-  bottom: -0.5em;
-  right: -0.5em;
-  padding: 0.5em;
+  bottom: 0;
+  right: 0;
   font-size: smaller;
   background: white;
-}
-/* line 145, ../sass/main.scss */
-.photo-page .photo-info .caption .admin-controls a {
-  cursor: pointer;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  padding-right: 2em;
+  padding-left: 1em;
 }
 /* line 148, ../sass/main.scss */
-.photo-page .photo-info .caption .admin-controls a:hover {
+.photo-page .photo-info .admin-controls a {
+  cursor: pointer;
+}
+/* line 151, ../sass/main.scss */
+.photo-page .photo-info .admin-controls a:hover {
   text-decoration: underline !important;
 }
-/* line 155, ../sass/main.scss */
+/* line 157, ../sass/main.scss */
 .photo-page .photo-info:not(:hover) .admin-controls {
   display: none;
 }
-/* line 160, ../sass/main.scss */
+/* line 162, ../sass/main.scss */
 .photo-page .photo-info .caption-edit-controls input[type=text] {
+  font-family: 'VAGRoundedBT-Regular';
+  font-size: 1.8em;
+  letter-spacing: -.02em;
   display: block;
   width: 100%;
+  padding: 0;
 }
-/* line 164, ../sass/main.scss */
+/* line 170, ../sass/main.scss */
 .photo-page .photo-info .caption-edit-controls textarea {
   display: block;
   width: 100%;
   min-height: 8em;
+  font-family: Verdana;
+  font-size: 1.1em;
+  padding: 0;
+  white-space: pre;
 }
-/* line 172, ../sass/main.scss */
-.photo-page .photo-navigation {
-  position: absolute;
-  right: 0;
-}
-/* line 175, ../sass/main.scss */
-.photo-page .photo-navigation .button-group {
-  margin: 0.5em;
-}
-/* line 180, ../sass/main.scss */
+/* line 182, ../sass/main.scss */
 .photo-page.landscape img {
   width: 100%;
 }
-/* line 184, ../sass/main.scss */
+/* line 192, ../sass/main.scss */
 .photo-page.portrait img {
   height: 100%;
 }
 
-/* line 189, ../sass/main.scss */
+/* line 198, ../sass/main.scss */
 html:not(:hover) .photo-page .photo-info {
   display: none;
 }
