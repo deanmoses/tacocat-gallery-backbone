@@ -160,12 +160,31 @@ define(['modules/fn'], function (fn) {
      * Display an individual photo
      */
     gallery.backbone.views.PhotoPage = Backbone.View.extend({
+    
+    	initialize: function() {
+        	_.bindAll(this, "render", "renderCaptionEdit");
+        },
 	    
         render: function() {
         	this.$el.empty();
         	var template = Handlebars.compile( $('#photo_template').html() );
 	        this.$el.html(template(this.model));
+	        var captionEditButton = this.$el.find('.admin-controls .caption-button');
+	        captionEditButton.click(this.renderCaptionEdit);
 	        return this;
+        },
+        
+        renderCaptionEdit : function() {
+	        var template = Handlebars.compile( $('#photo_caption_edit_template').html() );
+	        var photoInfoArea = this.$el.find('.photo-info');
+	        photoInfoArea.html(template(this.model));
+	        var submitButton = photoInfoArea.find('.caption-edit-controls button');
+	        submitButton.click(this.handleCaptionSubmit);
+	        return this;
+        },
+        
+        handleCaptionSubmit : function() {
+	        alert('I should really submit');
         }
     });
     

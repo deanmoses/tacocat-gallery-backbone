@@ -105,8 +105,9 @@ a.active:after {
 	
 	.photo-info {
 		position: absolute;
-		background: rgba(245, 245, 245, 0.8);
 		width: 100%;
+		background: rgba(245, 245, 245, 0.8);
+		border-bottom: solid black 2px;
 		
 		h1 {
             font-family: 'VAGRoundedBT-Regular';
@@ -124,10 +125,55 @@ a.active:after {
 			font-family: Verdana;
 			font-size: 1.3em;
 			margin: 0.5em 0.5em;
+			position: relative;
 			
 			p {
 				margin-top: 0.5em;
 			}
+			
+			.admin-controls {
+				position: absolute;
+				bottom: -0.5em;
+				right: -0.5em;
+				padding: 0.5em;
+				font-size: smaller;
+				background: white;
+				//border-top-left-radius: 5px;
+				//border-top: solid gray 1px;
+				//border-left: solid gray 1px;
+				
+				a {
+					cursor: pointer;
+					
+					&:hover {
+						text-decoration: underline !important;	
+					}
+				}
+			}
+		}
+		
+		&:not(:hover) .admin-controls {
+			display: none;
+		}
+		
+		.caption-edit-controls {
+			input[type=text] {
+				display: block;
+				width: 100%;
+			}
+			textarea {
+				display: block;
+				width: 100%;
+				min-height: 8em;
+			}
+		}
+	}
+	
+	.photo-navigation {
+		position: absolute;
+		right: 0;
+		.button-group {
+			margin: 0.5em;
 		}
 	}
 	
