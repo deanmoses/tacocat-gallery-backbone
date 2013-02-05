@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>Backbone Example</title>
+	</head>
+	<body>
+		<a href="#photo/2008/01_31/snoopy">Photo</a><br>
+		<a href="#photo/10/edit">Edit photo</a><br>
+		<a href="#album/2008">Album</a><br>
+		
+		<script src="http://code.aaronhardy.com/backbone-router-single-param/js/libs/jquery.js"></script>
+		<script src="http://code.aaronhardy.com/backbone-router-single-param/js/libs/underscore.js"></script>
+		<script src="http://code.aaronhardy.com/backbone-router-single-param/js/libs/backbone.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				var AppRouter = Backbone.Router.extend({
+					routes: {
+						"photo/:id/edit": "editPhoto",
+						"photo/*path": "showPhoto",
+						"album/*path": "showAlbum"
+					},
+ 
+					editPhoto: function(id) {
+						alert('Edit photo ' + id + '.');
+					},
+ 
+					showPhoto: function(path) {
+						alert('Show photo ' + path + '.');
+					},
+ 
+					showAlbum: function(path) {
+						alert('Show album ' + path + '.');
+					}
+
+				});
+ 
+				var appRouter = new AppRouter();
+				Backbone.history.start();
+			});
+		</script>
+	</body>
+</html>

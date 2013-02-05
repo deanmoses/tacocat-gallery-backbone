@@ -1,0 +1,103 @@
+<html>
+	<style>
+		html, body, div, header {
+			margin: 0;
+			padding: 0;
+		}
+		
+		header {
+			color: white;
+			background-color: #2A2929;
+			border-bottom: solid black 2px;
+			font-family: "HelveticaNeue", Arial, sans-serif;
+			padding: 1em;
+			height: 5em;
+		}
+		
+		#image-container {
+			position: absolute;
+			top: 5em;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background: lightyellow;
+		}
+		
+		img#image {
+			
+		}
+	
+	</style>
+<body>
+	<header>
+		Test of resizing an image proportionally to fit container.
+	</header>
+	
+	<div id="image-container">
+		<img 
+			id="image"
+			style="max-width: 1024px; max-height: 768px;" 
+			src="http://www.tacocat.com/pictures/d/53351-3/monterey03.jpg" 
+		/>
+	</div>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+	<script>
+			function resizeImage() {
+				 // get image width and height
+			    var img_w = $('img#image').width();
+			    var img_h = $('img#image').height();
+			    var img_proportion = img_w / img_h;
+			    
+			    // get container width and height
+			    var container_w = $('#image-container').width();
+			    var container_h = $('#image-container').height();
+			    
+				//console.log('image: ' + img_w + ' x ' + img_h);
+				//console.log('container: ' + container_w + ' x ' + container_h);
+				
+				// calculate image height if we resized to 100% width
+				var img_w_new = container_w;
+				var img_h_new = container_w * img_proportion;
+				
+				// if image height based on 100% width is too tall for container, 
+				// calculate image width based on 100% height
+				if (img_h_new > container_h) {
+					console.log('height based');
+					img_h_new = container_h;
+					img_w_new = img_proportion * container_h;
+				}
+				
+				// change image width and height to new width and new height
+			    $('img#image').width(img_w_new);
+			    $('img#image').height(img_h_new);
+			}
+			
+			function getImageDimensions(path,callback){
+			    var img = new Image();
+			    img.onload = function(){
+			        callback({
+			            width : img.width,
+			            height : img.height
+			        });
+			    }
+			    img.src = path;
+			}
+			
+			getImageDimensions('image_src',function(data){
+			    var img = data;
+
+			    //img.width
+			    //img.height
+			
+			});
+			
+			
+			// onload
+			$(function(){ resizeImage(); });
+			// on resize
+			$(window).resize(function() { resizeImage(); });
+	
+	</script>
+	
+</body>
+</html>

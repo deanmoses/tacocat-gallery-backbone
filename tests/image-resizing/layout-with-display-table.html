@@ -1,0 +1,80 @@
+<!--
+	Using display: table 
+	http://www.onenaught.com/posts/201/use-css-displaytable-for-layout
+	Works on Firefox 2+, Safari 3+, Opera 9+ and IE8.
+	Does not work on IE 7,6
+-->
+<html>
+<head>
+	<style>
+		html, body {
+		    height: 100%;
+		    width: 100%;
+		    margin: 0;
+		    padding: 0;
+		}
+		.container {
+		    display: table;
+		    border-collapse: collapse;
+		    height: 100%;
+		    width: 100%;
+		}
+		.header-container {
+		   display: table-row;
+		}
+		.header-container header {
+			padding: 1em;
+			color: white;
+			background-color: #2A2929;
+			border-bottom: solid black 2px;
+			font-family: "HelveticaNeue", Arial, sans-serif;
+		}
+		.content-container {
+		    display: table-row;  /* height is dynamic, and will expand... */
+		    height: 100%;        /* ...as content is added (won't scroll) */
+		}
+		.content-container section {
+			 height: 100%;
+			 background-color: lightyellow;
+		    padding: 1em;
+		}
+		.content-container section img {
+			height: 100%;
+		}
+		.footer-container {
+		    display: table-row;
+		}
+		.footer-container footer {
+			 background: lightgray;
+		    padding: 1em;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+	    <div class="header-container">
+	    		<header>
+					<h1>Image Title</h1>
+			      <p>Image caption stuff goes here.</p>
+			      <p>On multiple lines.</p>
+			      <p>Yeah baby.</p>
+	       	</header>
+	    </div>
+	    <div class="content-container">
+       		<section>
+       			<img 
+						id="image"
+						style="max-width: 1024px; max-height: 768px;" 
+						src="http://www.tacocat.com/pictures/d/53351-3/monterey03.jpg" 
+					/>
+       		</section>
+    	 </div>
+	    <div class="footer-container">
+	        <footer>
+	        		<h3>Sticky footer</h3>
+	        		<p>Footer of variable height</p>
+	        </footer>
+	    </div>
+	</div>
+</body>
+</html>

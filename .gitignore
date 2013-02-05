@@ -3,3 +3,6 @@
 
 # SASS cache directory
 .sass-cache/
+
+# temporary editor save files
+*~
