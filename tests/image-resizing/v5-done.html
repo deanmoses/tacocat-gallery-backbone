@@ -15,30 +15,30 @@
 		    padding: 0;
 		    overflow: hidden;
 		}
-		.container {
+		.container-table {
 		    display: table;
 
 		    height: 100%;
 		    width: 100%;
 			overflow: hidden;
 		}
-		.header-container {
+		.container-table-row-header {
 			display: table-row;
 			color: white;
 			background-color: #2A2929;
 			border-bottom: solid black 2px;
 		}
-		.header-container header {
+		.container-table-row-header header {
 			padding: 1em;
 			font-family: "HelveticaNeue", Arial, sans-serif;
 			margin: 0 auto;
 		}
-		.content-container {
+		.container-table-row-image {
 		    display: table-row;
 		    height: 100%;
 		    overflow: hidden;
 		}
-		.content-container section {
+		.container-table-row-image .container-table-cell-image {
 			display: table-cell;
 		    overflow: hidden;
 		    border-spacing: 1em;
@@ -48,7 +48,7 @@
 		    overflow: hidden;
 		    
 		}
-		.content-container section #image-floater {
+		.container-table-row-image .container-table-cell-image .container-outer-image {
 			position: relative;
 			height: 100%;
 			width: 100%;
@@ -57,7 +57,7 @@
 			overflow: hidden;
 		}
 
-		.content-container section #image-floater #centered img {
+		.container-table-row-image .container-table-cell-image .container-outer-image .container-inner-image img {
 			display: none;
 			position: absolute;
 			width: 100%;
@@ -67,26 +67,26 @@
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 </head>
 <body>
-	<div class="container">
-	    <div class="header-container">
+
+	<div class="container-table">
+	    <div class="container-table-row-header">
     		<header>
 				<h1>Image Title</h1>
 				<p>The header resizes to fit contents using display: table-row</p>
 				<p>Custom JS to resize image.</p>
 			</header>
 	    </div>
-	    <div class="content-container">
-       		<section id="image-container">
-       			<div id="image-floater">
-       				<div id="centered">
+	    <div class="container-table-row-image">
+       		<div class="container-table-cell-image">
+       			<div class="container-outer-image">
+       				<div class="container-inner-image">
 	       				<img 
-							id="image"
 							style="max-width: 1024px; max-height: 768px;" 
 							src="http://tacocat.com/pictures/d/53351-3/monterey03.jpg" 
 						/>
 					</div>
        			</div>
-       		</section>
+       		</div>
     	 </div>
 	</div>
 	
@@ -140,7 +140,12 @@
 			}
 		}
 		
-		imageUtil.resizeImage('img#image', '.content-container section #image-floater');
+		imageUtil.resizeImage(
+			// image
+			'.container-table-row-image .container-table-cell-image .container-outer-image .container-inner-image img', 
+			// container to fit image into
+			'.container-table-row-image .container-table-cell-image .container-outer-image .container-inner-image'
+		);
 
 
 	</script>

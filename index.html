@@ -116,6 +116,7 @@
         </script>
         
         <script type="text/x-handlebars" id="photo_template">
+        <!--
         	<section class="photo-page {{orientation}}">
         		<section class="photo-info">
         			<div class="button-group float-right">
@@ -137,13 +138,44 @@
         		</section>
 	        	<img src="http://www.tacocat.com/pictures/d/{{id}}-3/{{pathComponent}}" style="max-width: {{width}}px; max-height: {{height}}px" />
         	</section>
+        	-->
+        	
+        	
+        	<div class="container-table photo-page {{orientation}}">
+			    <section class="container-table-row header">
+			    	<div class="container-table-cell">
+				    	<div class="button-group float-right">
+		            	 	<a class="button" {{#if prevPhoto}}href="#{{prevPhoto.url}}"{{/if}}>&#x2039; Prev</a>
+		                    <a class="button" href="#{{album.url}}">Album</a>
+		                    <a class="button" {{#if nextPhoto}}href="#{{nextPhoto.url}}"{{/if}}>Next &#x203A;</a>
+		                </div>
+						<h1><a href="#v/">{{title}}</a></h1>
+						<div class="caption">
+				            {{{description}}}
+			        	</div>
+			        	<div class="admin-controls">
+			            	<a class="caption-button">caption</a> | <a>edit</a>
+			            </div>
+			    	</div>
+			    </section>
+			    <div class="container-table-row image">
+		       		<div class="container-table-cell">
+	       				<div class="container-inner">
+	       					<img src="http://tacocat.com/pictures/d/{{id}}-3/{{pathComponent}}" style="max-width: {{width}}px; max-height: {{height}}px" />
+						</div>
+		       		</div>
+		    	 </div>
+			</div>
         </script>
         
         <script type="text/x-handlebars" id="photo_caption_edit_template">
         	<div class="caption-edit-controls">
 	        	<input type="text" name="title" value="{{{title}}}" />
 	        	<textarea name="caption">{{{description}}}</textarea>
-	        	<button>Submit</button> 
+	        	<div class="button-group">
+            	 	<a class="button cancel">Cancel</a>
+                    <a class="button submit success active">Submit</a>
+                </div>
         	</div>
         </script>
 

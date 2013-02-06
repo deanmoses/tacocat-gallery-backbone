@@ -61,7 +61,7 @@ $colorTextPrimary: #2a2929;
 
     @include box-shadow( 0 2px 3px 0 rgba(0,0,0,.25) );
     
-    &[href] {
+    &[href], &.active {
     	color: #ffffff;
     	cursor: pointer;
 	    @include transition( background-color 300ms );
@@ -79,10 +79,6 @@ $colorTextPrimary: #2a2929;
 			background-color: inherit;
 		}
 	}
-
-    &.active {
-        
-    }
 
     &:after {
         content: '';

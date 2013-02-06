@@ -15,7 +15,7 @@ define(['modules/fn'], function (fn) {
 		return null;
 	}
 	
-	gallery.isLoggedIn = function() { return gallery.readCookie('G2_hybrid') ? true : false; };
+	gallery.isAuthenticated = function() { return gallery.readCookie('G2_hybrid') ? true : false; };
 	
 	//
 	// MODELS
@@ -188,12 +188,20 @@ define(['modules/fn'], function (fn) {
 	        this.$el.html(template(this.model));
 	        var captionEditButton = this.$el.find('.admin-controls .caption-button');
 	        captionEditButton.click(this.renderCaptionEdit);
+	        
+	        gallery.imageUtil.resizeImage(
+				// image
+				'.container-table.photo-page .container-table-row.image .container-table-cell .container-inner img', 
+				// container to fit image into
+				'.container-table.photo-page .container-table-row.image .container-table-cell .container-inner'
+			);
+		
 	        return this;
         },
         
         renderCaptionEdit : function() {
 	        var template = Handlebars.compile( $('#photo_caption_edit_template').html() );
-	        var photoInfoArea = this.$el.find('.photo-info');
+	        var photoInfoArea = this.$el.find('.photo-page .container-table-row.header .container-table-cell');
 	        photoInfoArea.html(template(this.model));
 	        var submitButton = photoInfoArea.find('.caption-edit-controls button');
 	        submitButton.click(this.handleCaptionSubmit);
@@ -305,7 +313,56 @@ define(['modules/fn'], function (fn) {
 		return num + 2;
 	 });
 	 
-	 if (gallery.isLoggedIn()) {
+	 if (gallery.isAuthenticated()) {
 	 	$("body").addClass('authenticated');
 	 }
+	 
+	 gallery.imageUtil = {
+			resizeImageOnce : function(image, container) {
+			
+				 // get image width and height
+			    var img_w = image.width();
+			    var img_h = image.height();
+			    
+			    if (img_w <= 0 || img_h <= 0) return;
+			    
+			    // get container width and height
+			    var container_w = container.width();
+			    var container_h = container.height();
+			    
+			    if (container_w <=0 || container_h <=0) return;
+				
+				// calculate image height if we resized to 100% width
+				var img_h_new = Math.round(container_w * (img_h / img_w));
+				
+				// if new image height fits within container, we've got our dimensions
+				if (img_h_new <= container_h) {
+					//console.log('width based.  container w: ' + container_w + ' > ' + container.parent().width() + ' > ' + container.parent().width());
+					image.width(container_w);
+					image.height(img_h_new);
+				}
+				// else if new image height is too tall for container, 
+				// make image height 100% of container
+				else {
+					//console.log('height based');
+					image.height(container_h);
+					image.width(Math.round(container_h * (img_w / img_h)));
+				}
+				
+				image.css('display', 'block');
+
+			    // update header width to match image
+			    //$('.header-container header').width(image.width());
+			},
+			
+			resizeImage : function(imageExpression, containerExpression) {
+				var image = $(imageExpression);
+				var container = $(containerExpression);
+				var _this = this;
+				
+				image.load(function(){ console.log('img loaded'); _this.resizeImageOnce(image, container); });  // on initial image load (won't be called if it's already loaded)
+				//$(function(){ _this.resizeImageOnce(image, container); });  // on initial page load
+				$(window).resize(function() { _this.resizeImageOnce(image, container); });  // on window resize
+			}
+		}
 });

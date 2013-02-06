@@ -7,6 +7,9 @@ $titleColor: #fff;
 
 html, body, #page {
 	height: 100%;
+	margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
 html {
@@ -96,6 +99,136 @@ a.active:after {
 	}
 }
 
+
+.container-table.photo-page {
+    display: table;
+    height: 100%;
+    width: 100%;
+	overflow: hidden;
+	
+	.container-table-row.header {
+		display: table-row;
+		color: white;
+		background-color: #2A2929;
+		border-bottom: solid black 2px;
+		
+		.container-table-cell {
+			position: relative;
+			padding: 1em;
+		
+				
+			h1 {
+	            font-family: 'VAGRoundedBT-Regular';
+			    font-size: 1.8em;
+			    letter-spacing: -.02em;
+		        cursor: pointer;
+		        margin-bottom: 0.5em;
+			}
+			
+			.caption {
+				font-size: 1.3em;
+				max-width: 40em;
+				
+				p {
+					margin-top: 0.5em;
+				}
+			}
+			
+			.admin-controls {
+				position: absolute;
+				bottom: 1;
+				right: 0;
+				font-size: smaller;
+				color: white;
+				background-color: #2A2929;
+				//border-top-left-radius: 5px;
+				//border-top: solid gray 1px;
+				//border-left: solid gray 1px;
+				padding-top: 1em;
+				padding-bottom: 1em;
+				padding-right: 2em;
+				padding-left: 1em;
+				
+				a {
+					cursor: pointer;
+					
+					&:hover {
+						text-decoration: underline !important;	
+					}
+				}
+			}
+			
+			&:not(:hover) .admin-controls {
+				display: none;
+			}
+			
+			.caption-edit-controls {
+				input[type=text] {
+					font-family: 'VAGRoundedBT-Regular';
+					font-size: 1.8em;
+					letter-spacing: -.02em;
+					display: block;
+					width: 100%;
+					padding: 0;
+					padding: 0.2em;
+				}
+				textarea {
+					display: block;
+					width: 100%;
+					min-height: 8em;
+					font-family: Verdana;
+					font-size: 1.1em;
+					padding: 0.4em;
+					white-space: pre;
+				}
+				.button-group {
+					margin-top: 0.7em;
+					
+					a {
+						&.submit {
+							color: white;
+							font-weight: bold;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	.container-table-row.image {
+	    display: table-row;
+	    height: 100%;
+	    overflow: hidden;
+
+		.container-table-cell {
+			display: table-cell;
+		    overflow: hidden;
+		    border-spacing: 1em;
+		    padding: 1em;
+		    //border: solid green 3px;
+		    //background-color: lightgreen;
+		    overflow: hidden;
+		    
+			.container-inner {
+				position: relative;
+				height: 100%;
+				width: 100%;
+				//border: solid red 2px;
+				//background-color: lightyellow;
+				overflow: hidden;
+		
+				img {
+					display: none;
+					position: absolute;
+					width: 100%;
+				}
+			}
+		}
+	}
+}
+
+
+/*
 .photo-page {
 	width: 100%;
 	margin: auto 0;
@@ -197,3 +330,4 @@ a.active:after {
 html:not(:hover) .photo-page .photo-info {
 	display: none;
 }
+*/
