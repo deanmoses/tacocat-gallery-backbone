@@ -1,0 +1,103 @@
+<html>
+	<title>Javascript Image Resizing Test</title>
+	<style>
+		html, body, div, header {
+			margin: 0;
+			padding: 0;
+		}
+		
+		body {
+			position: relative;
+			overflow: hidden;
+		}
+		
+		header {
+			color: white;
+			background-color: #2A2929;
+			border-bottom: solid black 2px;
+			font-family: "HelveticaNeue", Arial, sans-serif;
+			padding: 1em;
+		}
+		
+		#image-container {
+			position: relative;
+		}
+		
+		#image-container div {
+			position: absolute;
+			top: 5em;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background: lightyellow;
+			overflow: hidden;
+			z-index: -1;
+		}
+		
+		img#image {
+			display: block;
+			margin: auto auto;
+		}
+	
+	</style>
+<body>
+	<header>
+		<div class="caption">
+			Test of resizing an image proportionally to fit container.
+			<p>
+				If it doesn't work, then try try again.
+			</p>
+		</div>
+	</header>
+	<div id="image-container">
+		<div>
+			<img 
+				id="image"
+				style="max-width: 1024px; max-height: 768px;" 
+				src="http://www.tacocat.com/pictures/d/53351-3/monterey03.jpg" 
+			/>
+		</div>
+	</div>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+	<script>
+			function resizeImage() {
+				 // get image width and height
+			    var img_w = $('img#image').width();
+			    var img_h = $('img#image').height();
+			    
+			    // get container width and height
+			    var container_w = $('#image-container div').width();
+			    var container_h = $('#image-container div').height();
+
+				// calculate image height if we resized to 100% width
+				var img_w_new = container_w;
+				var img_h_new = Math.round(container_w * (img_h / img_w));
+				
+				console.log('image: ' + img_w + ' x ' + img_h + ' - ' +
+							'container: ' + container_w + ' x ' + container_h + ' - ' +
+							'image new: ' + img_w_new + ' x ' + img_h_new);
+				
+				// if image height based on 100% width is too tall for container, 
+				// calculate image width based on 100% height
+				if (img_h_new > container_h) {
+					console.log('height based');
+					img_h_new = container_h;
+					img_w_new = Math.round(container_h * (img_w / img_h));
+				}
+				else {
+					console.log('width based');
+				}
+				
+				// change image width and height to new width and new height
+			    $('img#image').width(img_w_new);
+			    $('img#image').height(img_h_new);
+			}
+
+			
+			$(resizeImage()); // on initial page load
+			$(window).resize(resizeImage());  // on window resize
+	
+	</script>
+	
+</body>
+</html>
