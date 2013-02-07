@@ -1,3 +1,4 @@
+<!doctype html>
 <html>
 
     <head>
@@ -7,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link type="text/css" rel="stylesheet" href="assets/styles/css/main.css" />
-
+<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
     </head>
 
     <body>
@@ -16,27 +17,103 @@
 
 	    </div>
 
-        <script src="assets/js/lib/curl.min.js"></script>
-
+        <script src="assets/js/lib/require-2.1.4-min.js"></script>
         <script>
+			//
+			// Configure require.js
+			//
+			require.config({
+			
+				baseUrl: 'assets/js',
+
+				paths: {
+			        'jquery': 'lib/jquery-1.9.1.min',
+			        'lodash': 'lib/lodash.underscore.min.1.0.0.rc3',
+			        'backbone': 'lib/backbone',
+			        'handlebars': 'lib/handlebars.1.0.rc2',
+			        'wysihtml5': 'modules/wysihtml5-0.3.0.min',
+			        'wysihtml5-parser-rules': 'modules/wysihtml5-parser-rules-advanced'
+			    },
+			        
+				shim: {
+				    backbone: {
+						deps: ['lodash', 'jquery'],  // Dependencies loaded before backbone
+						exports: 'Backbone' // Once loaded, use the global 'Backbone' as the module value
+				    },
+				    lodash: {
+				    	exports: "_"
+				    },
+				    handlebars: {
+						exports: 'Handlebars'
+				    },
+				    wysihtml5: {
+				    	deps: ['wysihtml5-parser-rules'],
+					    exports: 'wysihtml5'
+				    },
+				    wysihtml5ParserRules: {
+					    exports: 'wysihtml5ParserRules'
+				    }
+				}
+			});
+			
+			window.gallery =  {
+                app: {
+                    models: {},
+                    collections: {},
+                    views: {}
+                },
+                
+                backbone: {
+                    models: {},
+                    collections: {},
+                    views: {}
+                }
+	        };
+
+			
+			//
+			// Main application javascript
+			//
+			// require.js loads this, and this determines everything else to load
+			//
+			
+			require(
+				[
+					'app'				
+				], 
+				function(App) {
+					
+				}
+			);
+        </script>
+
+<!--
+        <script>
+        
+        	
+        
+        
+        
             window.gallery =  {
                 app: {
                     models: {},
                     collections: {},
                     views: {}
                 },
+                
                 backbone: {
                     models: {},
                     collections: {},
                     views: {}
                 },
+                
 	            curlConfig: {
 	                baseUrl: 'assets/js',
 	                paths: {
-	                    'jquery': 'lib/jquery',
-	                    'lodash': 'lib/lodash.custom.min.js',
+	                    'jquery': 'lib/jquery-1.9.1.min.js',
+	                    'lodash': 'lib/lodash.underscore.min.1.0.0.rc3.js',
 	                    'backbone': 'lib/backbone',
-	                    'handlebars': 'lib/handlebars'
+	                    'handlebars': 'lib/handlebars.1.0.rc2.js'
 	                },
 	                preloads: [
 	                	'js!jquery!order', 
@@ -50,6 +127,7 @@
 	        curl(gallery.curlConfig, ['app'], function(App) {});
         </script>
         
+        -->
         <script type="text/x-handlebars" id="root_album_header_template">
         	<header class="header">
 	            <div class="header-primary clearfix">
@@ -143,7 +221,7 @@
         	
         	<div class="container-table photo-page {{orientation}}">
 			    <section class="container-table-row header">
-			    	<div class="container-table-cell">
+			    	<div class="container-table-cell" id="photo-info">
 				    	<div class="button-group float-right">
 		            	 	<a class="button" {{#if prevPhoto}}href="#{{prevPhoto.url}}"{{/if}}>&#x2039; Prev</a>
 		                    <a class="button" href="#{{album.url}}">Album</a>
@@ -169,12 +247,49 @@
         </script>
         
         <script type="text/x-handlebars" id="photo_caption_edit_template">
+	        <link type="text/css" rel="stylesheet" href="assets/styles/css/editor/stylesheet.css" />
         	<div class="caption-edit-controls">
 	        	<input type="text" name="title" value="{{{title}}}" />
-	        	<textarea name="caption">{{{description}}}</textarea>
+	        	
+	        	
+	        	
+				<div id="wysihtml5-editor-toolbar">
+					<header>
+						<ul class="commands">
+							<li data-wysihtml5-command="bold" title="Make text bold (CTRL + B)" class="command"></li>
+							<li data-wysihtml5-command="italic" title="Make text italic (CTRL + I)" class="command"></li>
+							<li data-wysihtml5-command="underline" title="Make text underline (CTRL + U)" class="command"></li>
+							<li data-wysihtml5-command="insertUnorderedList" title="Insert an unordered list" class="command"></li>
+							<li data-wysihtml5-command="createLink" title="Insert a link" class="command"></li>
+							<li data-wysihtml5-action="change_view" title="Show HTML" class="action"></li>
+						</ul>
+					</header>
+					<div data-wysihtml5-dialog="createLink" style="display: none;">
+						<label>
+							Link:
+							<input data-wysihtml5-dialog-field="href" value="http://">
+						</label>
+						<a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
+					</div>
+					
+					<div data-wysihtml5-dialog="insertImage" style="display: none;">
+						<label>
+							Image:
+							<input data-wysihtml5-dialog-field="src" value="http://">
+						</label>
+						<a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
+					</div>
+				</div>
+				
+				<section>
+					<textarea id="caption" spellcheck="true" wrap="on" autofocus placeholder="Enter caption ...">
+						{{{description}}}
+					</textarea>
+				</section>
+	        	
 	        	<div class="button-group">
             	 	<a class="button cancel">Cancel</a>
-                    <a class="button submit success active">Submit</a>
+                    <a class="button submit success active">Save</a>
                 </div>
         	</div>
         </script>

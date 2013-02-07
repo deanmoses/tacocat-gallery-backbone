@@ -191,6 +191,10 @@ a.active:after {
 						}
 					}
 				}
+				
+				iframe.wysihtml5-sandbox {
+					min-height: 10em;
+				}
 			}
 		}
 	}

@@ -1,4 +1,21 @@
-define(['modules/fn'], function (fn) {
+// This file follows the AMD module format, so that curl.js can load it
+// Good article about modular JS:  http://addyosmani.com/writing-modular-js/
+define(
+
+	// modules I depend on
+	[
+		'jquery',
+		'backbone',
+		'handlebars',
+		'modules/fn'
+	],
+	
+	// This function defines the module
+	// The modules I depend on are passed in as parameters  
+	// If it REALLY followed the AMD module format, everything in here 
+	// would be wrapped in an object and that object would be returned, 
+	// that's what makes it a module
+	function ($, Backbone, Handlebars, fn) {
 
 	//
 	// DETERMINE WHETHER USER IS LOGGED IN
@@ -41,11 +58,11 @@ define(['modules/fn'], function (fn) {
 			}
 			// else if it's a sub album with photos
 			else if (this.id.indexOf("/") >= 0) {
-				return "file:///Users/dmoses/Sites/p/mock/album.json.txt";	
+				return "mock/album.json.txt";	
 			}
 			// else it's a year album
 			else {
-				return "file:///Users/dmoses/Sites/p/mock/album-year.json.txt";	
+				return "mock/album-year.json.txt";	
 			}
 		},
 		
@@ -179,7 +196,7 @@ define(['modules/fn'], function (fn) {
     gallery.backbone.views.PhotoPage = Backbone.View.extend({
     
     	initialize: function() {
-        	_.bindAll(this, "render", "renderCaptionEdit");
+        	_.bindAll(this, "render", "renderCaptionEdit", "renderCaptionEditReal", "handleCaptionSubmit", "handleCaptionCancel");
         },
 	    
         render: function() {
@@ -199,17 +216,68 @@ define(['modules/fn'], function (fn) {
 	        return this;
         },
         
+        /**
+         * Show the photo caption edit UI
+         */
         renderCaptionEdit : function() {
-	        var template = Handlebars.compile( $('#photo_caption_edit_template').html() );
-	        var photoInfoArea = this.$el.find('.photo-page .container-table-row.header .container-table-cell');
-	        photoInfoArea.html(template(this.model));
-	        var submitButton = photoInfoArea.find('.caption-edit-controls button');
-	        submitButton.click(this.handleCaptionSubmit);
+        	var _this = this;
+        	
+        	// The edit UI requires the wysihtml5 rich text editor JS to be loaded
+        	require(
+				[
+					'wysihtml5'
+				], 
+				function(wysihtml5) {
+					_this.renderCaptionEditReal(wysihtml5);
+				}
+			);
+	        
 	        return this;
+        },
+        
+        /**
+         * Actually show the photo caption edit 
+         */
+        renderCaptionEditReal : function(wysihtml5) {
+	        var template = Handlebars.compile( $('#photo_caption_edit_template').html() );
+	        var photoInfoArea = this.$el.find('#photo-info');
+	        photoInfoArea.html(template(this.model));
+	        photoInfoArea.find('.button.submit').click(this.handleCaptionSubmit);
+	        photoInfoArea.find('.button.cancel').click(this.handleCaptionCancel);
+	        
+	        // create the rich text editor
+			var editor = new wysihtml5.Editor(
+				// id of textarea element
+				"caption",
+				{ 
+					// id of toolbar element
+					toolbar:      "wysihtml5-editor-toolbar", 
+					
+					// stylesheets to display inside the editor iframe
+					stylesheets: ["http://yui.yahooapis.com/2.9.0/build/reset/reset-min.css", "assets/styles/css/editor/editor.css"],
+					parserRules:  wysihtml5ParserRules // defined in parser rules set 
+				}
+			);
+			
+			// Hack I found online to sort of make the editor expand as you type
+			editor.observe("load", function() {
+				editor.composer.element.addEventListener("mouseover", function() {
+					editor.composer.iframe.style.height = editor.composer.element.scrollHeight + "px";
+				});
+				editor.composer.element.addEventListener("keyup", function() {
+					editor.composer.iframe.style.height = editor.composer.element.scrollHeight + "px";
+				});
+			});
+
+			return this;
         },
         
         handleCaptionSubmit : function() {
 	        alert('I should really submit');
+        },
+        
+        handleCaptionCancel : function() {
+	        this.render();
         }
     });
     

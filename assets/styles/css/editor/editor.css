@@ -1,0 +1,154 @@
+/*
+ * Styles for inside the iframe of the wysihtml5 rich text editor
+ *
+ */
+/* line 6, ../../sass/editor/editor.scss */
+html {
+  background: transparent;
+}
+
+/* line 14, ../../sass/editor/editor.scss */
+h1, h2 {
+  line-height: 1;
+  font-family: Rockwell, "Courier New", Courier, Georgia;
+  border-bottom: 1px solid #999999;
+  font-weight: bold;
+  margin: 0 5px 25px 0;
+  padding: 0 0 8px;
+}
+
+/* line 23, ../../sass/editor/editor.scss */
+h1 {
+  font-size: 27px;
+}
+
+/* line 27, ../../sass/editor/editor.scss */
+h2 {
+  font-size: 18px;
+}
+
+/* line 31, ../../sass/editor/editor.scss */
+p, li {
+  line-height: 1.5;
+}
+
+/* line 35, ../../sass/editor/editor.scss */
+p, ul, ol {
+  padding-bottom: 25px;
+}
+
+/* line 39, ../../sass/editor/editor.scss */
+a {
+  color: inherit;
+}
+
+/* line 43, ../../sass/editor/editor.scss */
+strong, b {
+  font-weight: bold;
+}
+
+/* line 47, ../../sass/editor/editor.scss */
+i, em {
+  font-style: italic;
+}
+
+/* line 51, ../../sass/editor/editor.scss */
+li {
+  margin-left: 30px;
+}
+
+/* line 55, ../../sass/editor/editor.scss */
+ul li {
+  list-style: disc outside;
+}
+
+/* line 59, ../../sass/editor/editor.scss */
+ol li {
+  list-style: decimal outside;
+}
+
+/* line 63, ../../sass/editor/editor.scss */
+li img {
+  vertical-align: middle;
+  margin: 2px 5px 5px 0;
+}
+
+/* line 68, ../../sass/editor/editor.scss */
+.wysiwyg-color-black {
+  color: black;
+}
+
+/* line 72, ../../sass/editor/editor.scss */
+.wysiwyg-color-silver {
+  color: silver;
+}
+
+/* line 76, ../../sass/editor/editor.scss */
+.wysiwyg-color-gray {
+  color: gray;
+}
+
+/* line 80, ../../sass/editor/editor.scss */
+.wysiwyg-color-white {
+  color: white;
+}
+
+/* line 84, ../../sass/editor/editor.scss */
+.wysiwyg-color-maroon {
+  color: maroon;
+}
+
+/* line 88, ../../sass/editor/editor.scss */
+.wysiwyg-color-red {
+  color: red;
+}
+
+/* line 92, ../../sass/editor/editor.scss */
+.wysiwyg-color-purple {
+  color: purple;
+}
+
+/* line 96, ../../sass/editor/editor.scss */
+.wysiwyg-color-fuchsia {
+  color: fuchsia;
+}
+
+/* line 100, ../../sass/editor/editor.scss */
+.wysiwyg-color-green {
+  color: green;
+}
+
+/* line 104, ../../sass/editor/editor.scss */
+.wysiwyg-color-lime {
+  color: lime;
+}
+
+/* line 108, ../../sass/editor/editor.scss */
+.wysiwyg-color-olive {
+  color: olive;
+}
+
+/* line 112, ../../sass/editor/editor.scss */
+.wysiwyg-color-yellow {
+  color: yellow;
+}
+
+/* line 116, ../../sass/editor/editor.scss */
+.wysiwyg-color-navy {
+  color: navy;
+}
+
+/* line 120, ../../sass/editor/editor.scss */
+.wysiwyg-color-blue {
+  color: blue;
+}
+
+/* line 124, ../../sass/editor/editor.scss */
+.wysiwyg-color-teal {
+  color: teal;
+}
+
+/* line 128, ../../sass/editor/editor.scss */
+.wysiwyg-color-aqua {
+  color: aqua;
+}

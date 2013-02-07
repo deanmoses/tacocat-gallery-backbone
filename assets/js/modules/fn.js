@@ -1,3 +1,4 @@
+// This follows the AMD module format, so that curl.js can load it
 define(function() {
 
     var fn = {

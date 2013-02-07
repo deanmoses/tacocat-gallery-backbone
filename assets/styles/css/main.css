@@ -1238,13 +1238,17 @@ a:before {
   color: white;
   font-weight: bold;
 }
-/* line 198, ../sass/main.scss */
+/* line 195, ../sass/main.scss */
+.container-table.photo-page .container-table-row.header .container-table-cell .caption-edit-controls iframe.wysihtml5-sandbox {
+  min-height: 10em;
+}
+/* line 202, ../sass/main.scss */
 .container-table.photo-page .container-table-row.image {
   display: table-row;
   height: 100%;
   overflow: hidden;
 }
-/* line 203, ../sass/main.scss */
+/* line 207, ../sass/main.scss */
 .container-table.photo-page .container-table-row.image .container-table-cell {
   display: table-cell;
   overflow: hidden;
@@ -1252,14 +1256,14 @@ a:before {
   padding: 1em;
   overflow: hidden;
 }
-/* line 212, ../sass/main.scss */
+/* line 216, ../sass/main.scss */
 .container-table.photo-page .container-table-row.image .container-table-cell .container-inner {
   position: relative;
   height: 100%;
   width: 100%;
   overflow: hidden;
 }
-/* line 220, ../sass/main.scss */
+/* line 224, ../sass/main.scss */
 .container-table.photo-page .container-table-row.image .container-table-cell .container-inner img {
   display: none;
   position: absolute;
