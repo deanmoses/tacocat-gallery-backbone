@@ -273,10 +273,28 @@ define(
         },
         
         handleCaptionSubmit : function() {
-	        alert('I should really submit');
+	        var title = this.$el.find('.caption-edit-controls input[name="title"]');
+	        var description = this.$el.find('.caption-edit-controls textarea#caption');
+	        
+	        // Update the server if the new title / description is actually different
+	        if (this.model.title != title.val() || this.model.description != description.val()) {
+		        // TODO:  save the new title and description
+		        console.log('Should submit title: ' + title.val() + ' and description: ' + description.val());
+		        
+		        // Update the title and description on our internal model
+		        this.model.title = title.val();
+			    this.model.description = description.val();
+		    }
+		    else {
+			    console.log("caption / title haven't changed");
+		    }
+	        
+	        // Show the regular photo UI instead of the edit UI
+	        this.render();
         },
         
         handleCaptionCancel : function() {
+        	// Show the regular photo UI instead of the edit UI
 	        this.render();
         }
     });
