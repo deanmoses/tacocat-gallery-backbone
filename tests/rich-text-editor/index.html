@@ -1,0 +1,65 @@
+<html>
+<head>
+	<link rel="stylesheet" href="http://yui.yahooapis.com/2.9.0/build/reset/reset-min.css">
+	<link rel="stylesheet" href="wysihtml5/website/css/stylesheet.css">
+	
+	<!-- wysihtml5 parser rules -->
+	<script src="wysihtml5/parser_rules/advanced.js"></script>
+	<!-- Library -->
+	<script src="wysihtml5/dist/wysihtml5-0.3.0.min.js"></script>
+</head>
+<body>
+
+ <div id="wysihtml5-toolbar">
+      <header>
+        <ul class="commands">
+          <li data-wysihtml5-command="bold" title="Make text bold (CTRL + B)" class="command"></li>
+          <li data-wysihtml5-command="italic" title="Make text italic (CTRL + I)" class="command"></li>
+          <li data-wysihtml5-command="underline" title="Make text underline (CTRL + U)" class="command"></li>
+          <li data-wysihtml5-command="insertUnorderedList" title="Insert an unordered list" class="command"></li>
+          <li data-wysihtml5-command="createLink" title="Insert a link" class="command"></li>
+          <li data-wysihtml5-action="change_view" title="Show HTML" class="action"></li>
+        </ul>
+      </header>
+      <div data-wysihtml5-dialog="createLink" style="display: none;">
+        <label>
+          Link:
+          <input data-wysihtml5-dialog-field="href" value="http://">
+        </label>
+        <a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
+      </div>
+
+      <div data-wysihtml5-dialog="insertImage" style="display: none;">
+        <label>
+          Image:
+          <input data-wysihtml5-dialog-field="src" value="http://">
+        </label>
+        <a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
+      </div>
+    </div>
+	
+	<section>
+      <textarea id="wysihtml5-textarea" spellcheck="false" wrap="off" autofocus placeholder="Enter something ...">
+      	<p>
+      		This is an open source rich text editor customized for use on Tacocat
+      	</p>
+      	<p>Check the <a href="https://github.com/xing/wysihtml5/blob/master/examples/advanced.html">advanced demo</a> or find a full list of <a href="https://github.com/xing/wysihtml5/wiki/Supported-Commands">all supported commands here</a>.</p>
+     		<p>
+     			The image sprite for the toolbar doesn't have an underline icon.
+     		</p>
+      </textarea>
+   </section>
+	
+	
+	<script>
+		var editor = new wysihtml5.Editor(
+			"wysihtml5-textarea", // id of textarea element
+			{ 
+			  toolbar:      "wysihtml5-toolbar", // id of toolbar element
+			  stylesheets: ["http://yui.yahooapis.com/2.9.0/build/reset/reset-min.css", "wysihtml5/website/css/editor.css"],
+			  parserRules:  wysihtml5ParserRules // defined in parser rules set 
+			}
+		);
+	</script>
+</body>
+</html>
