@@ -9,7 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link type="text/css" rel="stylesheet" href="assets/styles/css/main.css" />
-<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+
     </head>
 
     <body>
@@ -17,7 +17,11 @@
 	    <div id="page">
 
 	    </div>
-
+	    <script>
+	        var require = {
+	           urlArgs : "v=2"
+	        };
+	    </script>
         <script src="assets/js/lib/require-2.1.4-min.js"></script>
         <script>
 			//
@@ -195,31 +199,6 @@
         </script>
         
         <script type="text/x-handlebars" id="photo_template">
-        <!--
-        	<section class="photo-page {{orientation}}">
-        		<section class="photo-info">
-        			<div class="button-group float-right">
-	            	 	<a class="button" {{#if prevPhoto}}href="#{{prevPhoto.url}}"{{/if}}>&#x2039; Prev</a>
-	                    <a class="button" href="#{{album.url}}">Album</a>
-	                    <a class="button" {{#if nextPhoto}}href="#{{nextPhoto.url}}"{{/if}}>Next &#x203A;</a>
-	                </div>
-		        	<header class="photo-header">
-			            <div class="header-primary clearfix">
-			                <h1><a href="#v/">{{title}}</a></h1>
-			            </div>
-			        </header>
-			        <section class="caption">
-			            {{{description}}}
-		        	</section>
-	        		<section class="admin-controls">
-		            	<a class="caption-button">caption</a> | <a>edit</a>
-		            </section>
-        		</section>
-	        	<img src="http://www.tacocat.com/pictures/d/{{id}}-3/{{pathComponent}}" style="max-width: {{width}}px; max-height: {{height}}px" />
-        	</section>
-        	-->
-        	
-        	
         	<div class="container-table photo-page {{orientation}}">
 			    <section class="container-table-row header">
 			    	<div class="container-table-cell" id="photo-info">
@@ -251,8 +230,6 @@
 	        <link type="text/css" rel="stylesheet" href="assets/styles/css/editor/stylesheet.css" />
         	<div class="caption-edit-controls">
 	        	<input type="text" name="title" value="{{{title}}}" />
-	        	
-	        	
 	        	
 				<div id="wysihtml5-editor-toolbar">
 					<header>

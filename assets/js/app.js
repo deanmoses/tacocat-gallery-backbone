@@ -66,12 +66,22 @@ define(
 			}
 		},
 		
+		initialize: function() {
+        	_.bindAll(this, "getPhotoByPathComponent", "getNextPhoto", "getPrevPhoto");
+        },
+		
+		/**
+		 * Find a photo by it's pathComponent, like 'flowers.jpg'
+		 */
 		getPhotoByPathComponent : function(pathComponent) {
-			console.log("getPhotoByPathComponent("+pathComponent+")");
-			return _.find(this.attributes.children, function(child){
-				console.log("album.getPhotoByPathComponent("+pathComponent+"): looking at child.pathComponent: " + child.pathComponent);
+			//console.log("getPhotoByPathComponent("+pathComponent+"): model: ", jQuery.extend(true, {}, this));
+		
+			var photo = _.find(this.attributes.children, function(child){
+				//console.log("album.getPhotoByPathComponent("+pathComponent+"): looking at child.pathComponent: " + child.pathComponent);
 				return child.pathComponent == pathComponent;
 			});
+			
+			return photo;
 		},
 		
 		getNextPhoto : function(pathComponent) {
@@ -126,19 +136,71 @@ define(
     	// hash of albumPath, like '2010/01_31' to album Model
     	albums : [],
     	
-    	// retrieve an album model by full path, like '2010/01_31'
-    	getAlbum : function(path) {
-	    	//var album = gallery.app.models.albums.get(path);
+    	/**
+    	 * Retrieve an album model by full path, like '2010/01_31'.
+    	 *
+    	 * This is asynchronous -- you have to register a callback via
+    	 *  .then(), .always(), .done() and .fail()
+    	 */
+    	fetchAlbum : function(path) {
+
+			// build a jQuery Deferred object
+			var deferred = $.Deferred();
+			
+			// look for album in my cache of albums
 			var album = this.albums[path];
-			if (!album) {
-				console.log("album " + path + " isn't on client, fetching");
-				album = new gallery.backbone.models.Album({fullPath : path});
-				album.fetch();
-				//gallery.app.models.albums.update([album]);
-				this.albums[path] = album;
+			
+			// if album is in cache...
+			if (album) {
+				console.log("albumStore.fetchAlbum(): album " + path + " is in cache");
+				
+				// resolve the deferred immediately with success
+				deferred.resolve({
+					success : true,
+					album : album
+				});
 			}
-			console.log("retrieved album " + path, album);
-			return album;
+			// else the album is not in cache...
+			else {
+				console.log("albumStore.fetchAlbum(): album " + path + " isn't on client, fetching");
+				album = new gallery.backbone.models.Album({fullPath : path});
+				album.fetch({
+					success : function(model, response, options) {
+						//console.log("Success fetching album " + path);
+						
+						// Figure out path to parent album
+						// if there's a slash, then it's a sub album
+						if (path.indexOf("/") >=0) {
+							var pathParts = path.split("/");
+							pathParts.pop();
+							album.attributes.parentAlbumPath = pathParts.join("/");
+							album.attributes.albumType = "week";
+						}
+						// else if the album path is not "", it's a year album
+						else if (path.length > 0) {
+							album.attributes.parentAlbumPath = "";
+							album.attributes.albumType = "year";
+						}
+						// else this is the root album
+						else {
+							album.attributes.parentAlbumPath = null;
+							album.attributes.albumType = "root";
+						}
+						
+						// tell the deferred object to call all done() listeners
+						deferred.resolve(album);						
+					},
+					error : function(model, xhr, options) {
+						console.log("Error fetching album " + path);
+						
+						// tell the deferred object to call all .fail() listeners
+						deferred.reject();
+					}
+				});
+			}
+
+			// return the jQuery Promise so that the callers can use .then(), .always(), .done() and .fail()
+			return deferred.promise();
     	}
     };
     
@@ -157,7 +219,7 @@ define(
         },
         
         render: function() {
-        	//console.log("Main render");
+        	console.log("AlbumPage.render() model: ", this.model);
         	
         	// Blank the page
         	this.$el.empty();
@@ -181,7 +243,7 @@ define(
         	var html = "";
         	var thumbnailTemplate = Handlebars.compile( $('#thumbnail_template').html() );
         	_.each(this.model.get("children"), function(subItem) {
-        		//console.log("child", subItem);
+        		//console.log("AlbumPage.render() thumbnail child: " + subItem.title);
 	        	html += thumbnailTemplate(subItem);
         	});	
         	this.$("#thumbnails").html(html);
@@ -197,6 +259,7 @@ define(
     
     	initialize: function() {
         	_.bindAll(this, "render", "renderCaptionEdit", "renderCaptionEditReal", "handleCaptionSubmit", "handleCaptionCancel");
+        	//this.listenTo(this.model, "change", this.render);
         },
 	    
         render: function() {
@@ -273,6 +336,7 @@ define(
         },
         
         handleCaptionSubmit : function() {
+        	var _this = this;
 	        var title = this.$el.find('.caption-edit-controls input[name="title"]').val();
 	        var description = this.$el.find('.caption-edit-controls textarea#caption').val();
 	        
@@ -288,11 +352,11 @@ define(
 				// On success
 				.done(function(data) { 
 					// Update the title and description on our internal model
-			        this.model.title = title;
-				    this.model.description = description;
+			        _this.model.title = title;
+				    _this.model.description = description;
 					
 					// Show the regular photo UI instead of the edit UI
-					this.render();
+					_this.render();
 				})
 				// On error
 				.fail(function(data) { 
@@ -334,23 +398,32 @@ define(
 			
 			console.log("URL router viewPhoto() photo " + photoId + " in album " + albumPath);
 			
-			var album = gallery.albumStore.getAlbum(albumPath);
-			console.log("URL router got album " + albumPath + " for photo " + photoId, album);
+			// fetch the album, either from cache or from server
+			gallery.albumStore.fetchAlbum(albumPath)
+				.fail(function() {
+					alert("Couldn't find album " + albumPath);
+				})
+				.done(function(album) {
+					//console.log("URL router viewPhoto() got album " + albumPath + " for photo " + photoId + ".  Album: " , album);
 			
-			var photo = album.getPhotoByPathComponent(photoId);
-			if (!photo) throw "No photo with ID " + photoId;
-			console.log("URL router got photo " + photoId, photo);
+					var photo = album.getPhotoByPathComponent(photoId);
+					if (!photo) throw "No photo with ID " + photoId;
+					console.log("URL router got photo " + photoId, photo);
+					
+					// set the photo's album on the photo so the view can use that info
+					photo.album = album.attributes;
+					photo.nextPhoto = album.getNextPhoto(photoId);
+					photo.prevPhoto = album.getPrevPhoto(photoId);
+					photo.orientation = (photo.height > photo.width) ? "portrait" : "landscape";
+					
+					var view = new gallery.backbone.views.PhotoPage({
+						model : photo,
+						el: $('#page')
+					});
+					
+					view.render();
+				});
 			
-			// set the photo's album on the photo so the view can use that info
-			photo.album = album.attributes;
-			photo.nextPhoto = album.getNextPhoto(photoId);
-			photo.prevPhoto = album.getPrevPhoto(photoId);
-			photo.orientation = (photo.height > photo.width) ? "portrait" : "landscape";
-			var view = new gallery.backbone.views.PhotoPage({
-				model : photo,
-				el: $('#page')
-			});
-			view.render();
 		},
 		
 		editAlbum: function(path) {
@@ -366,35 +439,23 @@ define(
 			// Regularize path by getting rid of any preceding or trailing slashes
 			var pathParts = path.split("/");
 			var albumPath = pathParts.join("/");
-			
-			var album = gallery.albumStore.getAlbum(path);
-			if (!album) throw "No photo with ID " + photoId;
-			
-			// Figure out path to parent album
-			// if there's a slash, then it's a sub album
-			if (albumPath.indexOf("/") >=0) {
-				pathParts.pop();
-				album.attributes.parentAlbumPath = pathParts.join("/");
-				album.attributes.albumType = "week";
-			}
-			// else if the album path is not "", it's a year album
-			else if (albumPath.length > 0) {
-				album.attributes.parentAlbumPath = "";
-				album.attributes.albumType = "year";
-			}
-			// else this is the root album
-			else {
-				album.attributes.parentAlbumPath = null;
-				album.attributes.albumType = "root";
-			}
-			
-			// render the album
-			var view = new gallery.backbone.views.AlbumPage({
-				model: album,
-				el: $('#page')
-			});
-			view.render();
 
+			// fetch the album, either from cache or from server
+			gallery.albumStore.fetchAlbum(albumPath)
+				.fail(function() {
+					alert("Couldn't find album " + albumPath);
+				})
+				.done(function(album) {
+					//console.log("URL router viewAlbum() got album " + albumPath + ".  Album: " , album);
+			
+					// render the album
+					var view = new gallery.backbone.views.AlbumPage({
+						model: album,
+						el: $('#page')
+					});
+					
+					view.render(); 
+				});
 		},
 		
 		notFound: function(path) {

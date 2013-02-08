@@ -1,3 +1,9 @@
+/*
+ * Styles for the wysihtml5 rich text editor.
+ * 
+ * In a separate file so it can be loaded only for admins, and not in the initial request.
+ */
+ 
 #wysihtml5-editor-toolbar {
   position: relative;
 
