@@ -231,6 +231,10 @@ a.active:after {
 	}
 }
 
+// hide the photo edit controls unless the user is a site admin
+body:not(.is-site-admin) .admin-controls {
+	display: none;
+}
 
 /*
 .photo-page {

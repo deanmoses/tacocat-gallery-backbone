@@ -1,4 +1,4 @@
-/* line 17, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 17, ../../../../../../../.gem/ruby/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -20,45 +20,45 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
-/* line 22, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 22, ../../../../../../../.gem/ruby/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 html {
   line-height: 1;
 }
 
-/* line 24, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 24, ../../../../../../../.gem/ruby/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 ol, ul {
   list-style: none;
 }
 
-/* line 26, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 26, ../../../../../../../.gem/ruby/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* line 28, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 28, ../../../../../../../.gem/ruby/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 caption, th, td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle;
 }
 
-/* line 30, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 30, ../../../../../../../.gem/ruby/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 q, blockquote {
   quotes: none;
 }
-/* line 103, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 103, ../../../../../../../.gem/ruby/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 q:before, q:after, blockquote:before, blockquote:after {
   content: "";
   content: none;
 }
 
-/* line 32, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 32, ../../../../../../../.gem/ruby/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 a img {
   border: none;
 }
 
-/* line 116, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 116, ../../../../../../../.gem/ruby/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
   display: block;
 }
@@ -1270,6 +1270,11 @@ a:before {
   width: 100%;
 }
 
+/* line 235, ../sass/main.scss */
+body:not(.is-site-admin) .admin-controls {
+  display: none;
+}
+
 /*
 .photo-page {
 	width: 100%;
@@ -1376,100 +1381,100 @@ html:not(:hover) .photo-page .photo-info {
 /*
  * The photo and album captions
  */
-/* line 343, ../sass/main.scss */
+/* line 347, ../sass/main.scss */
 .caption p, .caption li {
   line-height: 1.5;
 }
-/* line 347, ../sass/main.scss */
+/* line 351, ../sass/main.scss */
 .caption a {
   color: inherit;
 }
-/* line 351, ../sass/main.scss */
+/* line 355, ../sass/main.scss */
 .caption strong, .caption b {
   font-weight: bold;
 }
-/* line 355, ../sass/main.scss */
+/* line 359, ../sass/main.scss */
 .caption i, .caption em {
   font-style: italic;
 }
-/* line 359, ../sass/main.scss */
+/* line 363, ../sass/main.scss */
 .caption li {
   margin-left: 30px;
 }
-/* line 363, ../sass/main.scss */
+/* line 367, ../sass/main.scss */
 .caption ul li {
   list-style: disc outside;
 }
-/* line 367, ../sass/main.scss */
+/* line 371, ../sass/main.scss */
 .caption ol li {
   list-style: decimal outside;
 }
-/* line 371, ../sass/main.scss */
+/* line 375, ../sass/main.scss */
 .caption li img {
   vertical-align: middle;
   margin: 2px 5px 5px 0;
 }
-/* line 376, ../sass/main.scss */
+/* line 380, ../sass/main.scss */
 .caption .wysiwyg-color-black {
   color: black;
 }
-/* line 380, ../sass/main.scss */
+/* line 384, ../sass/main.scss */
 .caption .wysiwyg-color-silver {
   color: silver;
 }
-/* line 384, ../sass/main.scss */
+/* line 388, ../sass/main.scss */
 .caption .wysiwyg-color-gray {
   color: gray;
 }
-/* line 388, ../sass/main.scss */
+/* line 392, ../sass/main.scss */
 .caption .wysiwyg-color-white {
   color: white;
 }
-/* line 392, ../sass/main.scss */
+/* line 396, ../sass/main.scss */
 .caption .wysiwyg-color-maroon {
   color: maroon;
 }
-/* line 396, ../sass/main.scss */
+/* line 400, ../sass/main.scss */
 .caption .wysiwyg-color-red {
   color: red;
 }
-/* line 400, ../sass/main.scss */
+/* line 404, ../sass/main.scss */
 .caption .wysiwyg-color-purple {
   color: purple;
 }
-/* line 404, ../sass/main.scss */
+/* line 408, ../sass/main.scss */
 .caption .wysiwyg-color-fuchsia {
   color: fuchsia;
 }
-/* line 408, ../sass/main.scss */
+/* line 412, ../sass/main.scss */
 .caption .wysiwyg-color-green {
   color: green;
 }
-/* line 412, ../sass/main.scss */
+/* line 416, ../sass/main.scss */
 .caption .wysiwyg-color-lime {
   color: lime;
 }
-/* line 416, ../sass/main.scss */
+/* line 420, ../sass/main.scss */
 .caption .wysiwyg-color-olive {
   color: olive;
 }
-/* line 420, ../sass/main.scss */
+/* line 424, ../sass/main.scss */
 .caption .wysiwyg-color-yellow {
   color: yellow;
 }
-/* line 424, ../sass/main.scss */
+/* line 428, ../sass/main.scss */
 .caption .wysiwyg-color-navy {
   color: navy;
 }
-/* line 428, ../sass/main.scss */
+/* line 432, ../sass/main.scss */
 .caption .wysiwyg-color-blue {
   color: blue;
 }
-/* line 432, ../sass/main.scss */
+/* line 436, ../sass/main.scss */
 .caption .wysiwyg-color-teal {
   color: teal;
 }
-/* line 436, ../sass/main.scss */
+/* line 440, ../sass/main.scss */
 .caption .wysiwyg-color-aqua {
   color: aqua;
 }

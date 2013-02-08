@@ -16,27 +16,73 @@ define(
 	// would be wrapped in an object and that object would be returned, 
 	// that's what makes it a module
 	function ($, Backbone, Handlebars, fn) {
+	
+	/**
+	 * Flag as to whether the system should be run offline.
+	 * Only for development.
+	 */
+	gallery.mock = false;
+	
+	/**
+ 	 * The base of the URL for all JSON calls
+ 	 */
+	gallery.baseAjaxUrl = "http://tacocat.com/pictures/main.php?g2_view=";
 
-	//
-	// DETERMINE WHETHER USER IS LOGGED IN
-	//
-	
-	gallery.readCookie = function(name) {
-		var nameEQ = name + "=";
-		var ca = document.cookie.split(';');
-		for(var i=0;i < ca.length;i++) {
-			var c = ca[i];
-			while (c.charAt(0)==' ') c = c.substring(1,c.length);
-			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-		}
-		return null;
-	}
-	
-	gallery.isAuthenticated = function() { return gallery.readCookie('G2_hybrid') ? true : false; };
-	
 	//
 	// MODELS
 	//
+	
+	/**
+	 * All the information about the currently logged in user, if any.
+	 */
+	gallery.backbone.models.Authentication = Backbone.Model.extend({
+	
+		/**
+		 * Called when a new instance of this model is created
+		 */
+		initialize : function() {
+			// Ensure that the 'this' variable is pointing to myself 
+			// in the specified methods in all contexts
+      	_.bindAll(this, "isSiteAdmin");
+		},
+	
+		/**
+		 * Return the URL that Backbone uses to fetch the model data.
+		 */
+		url : function() {
+			//console.log('models.Authentication.url() called');
+			
+			// if we 
+			if (gallery.mock) {
+				return "mock/authentication.json.txt";	
+			}
+			// else return real URL
+			else {
+				return gallery.baseAjaxUrl + "json.Auth";
+			}
+		},
+		
+		/**
+		 * Return true if the current user is logged in.
+		 *
+		 * This will return false until the authentication
+		 * model is actually fetched from the server.
+		 */
+		isAuthenticated : function() {
+			return this.get("isAuthenticated") == true;
+		},
+		
+		/**
+		 * Return true if the current user is logged in
+		 * and a site admin.
+		 *
+		 * This will return false until the authentication
+		 * model is actually fetched from the server.
+		 */
+		isSiteAdmin : function() {
+			return this.get("isSiteAdmin") == true;
+		}
+	});
 	 
 	/**
 	 * Represents an album.
@@ -148,17 +194,14 @@ define(
 			var deferred = $.Deferred();
 			
 			// look for album in my cache of albums
-			var album = this.albums[path];
+			var album = gallery.albumStore.albums[path];
 			
 			// if album is in cache...
 			if (album) {
 				console.log("albumStore.fetchAlbum(): album " + path + " is in cache");
 				
 				// resolve the deferred immediately with success
-				deferred.resolve({
-					success : true,
-					album : album
-				});
+				deferred.resolve(album);
 			}
 			// else the album is not in cache...
 			else {
@@ -186,6 +229,9 @@ define(
 							album.attributes.parentAlbumPath = null;
 							album.attributes.albumType = "root";
 						}
+						
+						// cache the album
+						gallery.albumStore.albums[path] = album;
 						
 						// tell the deferred object to call all done() listeners
 						deferred.resolve(album);						
@@ -219,7 +265,7 @@ define(
         },
         
         render: function() {
-        	console.log("AlbumPage.render() model: ", this.model);
+        	//console.log("AlbumPage.render() model: ", this.model);
         	
         	// Blank the page
         	this.$el.empty();
@@ -375,6 +421,43 @@ define(
         }
     });
     
+	//
+	// AUTHENTICATION
+	//
+	
+	/**
+	 * Create the single Authentication model this app will use.
+	 * There will only ever be one Authentication model created
+	 * in the system. 
+	 *
+	 * Whenever this model changes (call fetch() to update it),
+	 * it will insert or remove various classes from the <body> tag:
+	 * <body class="authenticated is-site-admin">
+	 */
+	gallery.authentication = new gallery.backbone.models.Authentication({});
+	gallery.authentication.fetch({
+		success : function(model, response, options) {
+			//console.log("gallery.authentication.fetch() - success.  model: ", model);
+			
+			if (model.isAuthenticated()) {
+				$("body").addClass('authenticated');
+			}
+			else {
+				$("body").removeClass('authenticated');
+			}
+			
+			if (model.isSiteAdmin()) {
+				$("body").addClass('is-site-admin');
+			}
+			else {
+				$("body").removeClass('is-site-admin');
+			}
+		},
+		error : function(model, xhr, options) {
+			console.log("gallery.authentication.fetch() - error.  xhr: ", xhr);
+		}
+	});
+	 
     //
     // ROUTING
     //
@@ -387,16 +470,12 @@ define(
 			"*path" : "notFound"
 		},
 		
-		editPhoto: function(path) {
-			console.log("URL wants to edit photo " + path);
-		},
-		
 		viewPhoto: function(path) {			
 			var pathParts = path.split("/");
 			var photoId = pathParts.pop();
 			var albumPath = pathParts.join("/");
 			
-			console.log("URL router viewPhoto() photo " + photoId + " in album " + albumPath);
+			//console.log("Router.viewPhoto() photo " + photoId + " in album " + albumPath);
 			
 			// fetch the album, either from cache or from server
 			gallery.albumStore.fetchAlbum(albumPath)
@@ -408,7 +487,7 @@ define(
 			
 					var photo = album.getPhotoByPathComponent(photoId);
 					if (!photo) throw "No photo with ID " + photoId;
-					console.log("URL router got photo " + photoId, photo);
+					//console.log("URL router got photo " + photoId, photo);
 					
 					// set the photo's album on the photo so the view can use that info
 					photo.album = album.attributes;
@@ -424,10 +503,6 @@ define(
 					view.render();
 				});
 			
-		},
-		
-		editAlbum: function(path) {
-			console.log("URL wants to edit album " + path);
 		},
 		
 		viewAlbum: function(path) {
@@ -472,10 +547,6 @@ define(
 		return num + 2;
 	 });
 	 
-	 if (gallery.isAuthenticated()) {
-	 	$("body").addClass('authenticated');
-	 }
-	 
 	 gallery.imageUtil = {
 			resizeImageOnce : function(image, container) {
 			
@@ -519,7 +590,10 @@ define(
 				var container = $(containerExpression);
 				var _this = this;
 				
-				image.load(function(){ console.log('img loaded'); _this.resizeImageOnce(image, container); });  // on initial image load (won't be called if it's already loaded)
+				image.load(function(){ 
+					//console.log('imageUtil.resizeImage(): img loaded'); 
+					_this.resizeImageOnce(image, container); 
+				});  // on initial image load (won't be called if it's already loaded)
 				//$(function(){ _this.resizeImageOnce(image, container); });  // on initial page load
 				$(window).resize(function() { _this.resizeImageOnce(image, container); });  // on window resize
 			}
