@@ -273,24 +273,36 @@ define(
         },
         
         handleCaptionSubmit : function() {
-	        var title = this.$el.find('.caption-edit-controls input[name="title"]');
-	        var description = this.$el.find('.caption-edit-controls textarea#caption');
+	        var title = this.$el.find('.caption-edit-controls input[name="title"]').val();
+	        var description = this.$el.find('.caption-edit-controls textarea#caption').val();
 	        
 	        // Update the server if the new title / description is actually different
-	        if (this.model.title != title.val() || this.model.description != description.val()) {
-		        // TODO:  save the new title and description
-		        console.log('Should submit title: ' + title.val() + ' and description: ' + description.val());
+	        if (this.model.title != title || this.model.description != description) {
+		        //console.log('Submitting new title: ' + title + ' and description: ' + description);
 		        
-		        // Update the title and description on our internal model
-		        this.model.title = title.val();
-			    this.model.description = description.val();
+		        // Send info to server
+				$.post(
+					"http://tacocat.com/pictures/main.php?g2_view=json.SaveCaption", 
+					{ id: this.model.id, title: title, description: description }
+				)
+				// On success
+				.done(function(data) { 
+					// Update the title and description on our internal model
+			        this.model.title = title;
+				    this.model.description = description;
+					
+					// Show the regular photo UI instead of the edit UI
+					this.render();
+				})
+				// On error
+				.fail(function(data) { 
+					alert("error: " + data);
+					console.log("Error saving caption", data);
+				})
 		    }
 		    else {
 			    console.log("caption / title haven't changed");
 		    }
-	        
-	        // Show the regular photo UI instead of the edit UI
-	        this.render();
         },
         
         handleCaptionCancel : function() {
