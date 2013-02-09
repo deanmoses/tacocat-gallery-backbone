@@ -106,16 +106,40 @@ a.active:after {
 	}
 }
 
+.album.root #thumbnails {
+	.thumbnail {
+		a {
+			vertical-align: top;
+			font-size: 1.5em;
+			padding-left: 0.5em;
+		}
+	}
+}
+
+.album.week #thumbnails {
+	.thumbnail {
+		display: inline-block;
+		a {
+			display: block;
+		}
+	}
+}
+
+.album.year #thumbnails {
+	.thumbnail {
+		display: inline-block;
+		a {
+			display: block;
+		}
+	}
+}
+
 .thumbnail {
 	margin: 1em;
-	display: inline-block;
 	vertical-align: top;
 	
 	img {
 		border: solid black 1px;
-	}
-	a {
-		display: block;
 	}
 	.title {
 		font-weight: bold;

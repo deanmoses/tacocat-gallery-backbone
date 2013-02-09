@@ -312,10 +312,84 @@ define(
 	        	// ... else it's a week album, or the root album
 	        	else {
 	         	var thumbnailTemplate = Handlebars.compile( $('#thumbnail_template').html() );
-	        		_.each(this.model.get("children"), function(subItem) {
-		        		//console.log("AlbumPage.render() thumbnail child: " + subItem.title);
-			        	html += thumbnailTemplate(subItem);
+	        		_.each(this.model.get("children"), function(child) {
+		        		//console.log("AlbumPage.render() thumbnail child: " + child.title);
+			        	html += thumbnailTemplate(child);
 		        	});
+		        	
+		        	// For the root album, add the early years as fake child albums 
+		        	if (albumType == "root") {
+		        		thumbnailTemplate = Handlebars.compile( $('#thumbnail_earlyyear_template').html() );
+
+		        		var earlyYears = [
+		        			{
+		        				url : "/pix/2006/index.php",
+		        				title : "2006",
+		        				thumbnail : {
+		        					url : "/pix/img/2006-reading.jpg",
+		        					height: 75,
+		        					width: 150
+		        				}
+		        			},
+		        			{
+		        				url : "/pix/2005/index.php",
+		        				title : "2005",
+		        				thumbnail : {
+		        					url : "/pix/img/2005-bath.jpg",
+		        					height: 75,
+		        					width: 150
+		        				}
+		        			},
+		        			{
+		        				url : "/pix/2004/index.php",
+		        				title : "2004",
+		        				thumbnail : {
+		        					url : "/pix/img/2004_fall_milo.jpg",
+		        					height: 75,
+		        					width: 75
+		        				}
+		        			},
+		        			{
+		        				url : "/pix/2003/index.php",
+		        				title : "2003",
+		        				thumbnail : {
+		        					url : "/pix/img/21months_small.jpg",
+		        					height: 75,
+		        					width: 75
+		        				}
+		        			},
+		        			{
+		        				url : "/pix/2002/index.php",
+		        				title : "2002",
+		        				thumbnail : {
+		        					url : "/pix/img/1year_small.jpg",
+		        					height: 75,
+		        					width: 75
+		        				}
+		        			},
+		        			{
+		        				url : "/pix/2001/index.php",
+		        				title : "2001",
+		        				thumbnail : {
+		        					url : "/pix/img/felix_small.jpg",
+		        					height: 75,
+		        					width: 75
+		        				}
+		        			},
+		        			{
+		        				url : "/pix/1973/dean/index.php",
+		        				title : "1973",
+		        				thumbnail : {
+		        					url : "/pix/img/1973-dean-2weeks-thumb.jpg",
+		        					height: 75,
+		        					width: 75
+		        				}
+		        			}
+		        		];
+		        		_.each(earlyYears, function(child) {
+				        	html += thumbnailTemplate(child);
+			        	});
+		        	}
 				}
 				
 	        	// Insert the thumbnail HTML into the DOM
