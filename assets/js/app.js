@@ -265,36 +265,63 @@ define(
         },
         
         render: function() {
-        	//console.log("AlbumPage.render() model: ", this.model);
-        	
-        	// Blank the page
-        	this.$el.empty();
-        		
-        	// Generate the album header HTML
-        	// We use a different template for different types of albums
-        	var headerTemplateId;
-        	if (this.model.attributes.albumType == "root") {
-	        	headerTemplateId = "#root_album_header_template";
-        	}
-        	else if (this.model.attributes.albumType == "year") {
-	        	headerTemplateId = "#year_album_header_template";
-        	}
-        	else {
-	        	headerTemplateId = "#week_album_header_template";
-        	}
-        	var headerTemplate = Handlebars.compile( $(headerTemplateId).html() );
-        	this.$el.html(headerTemplate(this.model.attributes));
-        	
-            // Generate the thumnails HTML
-        	var html = "";
-        	var thumbnailTemplate = Handlebars.compile( $('#thumbnail_template').html() );
-        	_.each(this.model.get("children"), function(subItem) {
-        		//console.log("AlbumPage.render() thumbnail child: " + subItem.title);
-	        	html += thumbnailTemplate(subItem);
-        	});	
-        	this.$("#thumbnails").html(html);
+	        	//console.log("AlbumPage.render() model: ", this.model);
+	        	
+	        	// Blank the page
+	        	this.$el.empty();
+	        	
+				// We render different types of albums differently
+				var albumType = this.model.attributes.albumType;
+				var headerTemplateId = "#" + albumType + "_album_header_template";
+				
+				// Generate the header HTML
+	        	var headerTemplate = Handlebars.compile( $(headerTemplateId).html() );
+	        	this.$el.html(headerTemplate(this.model.attributes));
+	        	
+	        	// Generate the thumnails HTML -- handled differently for different album types
+	         var html = "";
+	         	
+	        	// A year album
+	        	if (albumType == "year") {
+		        	// Group the child week albums of the year album by month
+		        	var months = _.groupBy(this.model.get("children"), function(child) {
+		        		// create a new javascript Date object based on the timestamp
+						// multiplied by 1000 so that the argument is in milliseconds, not seconds
+		        		var date = new Date(child.creationTimestamp * 1000);
+		        		var month = date.getMonth();
+		        		return month;
+		        	});
+		        	
+					// Template to render an entire month's worth of thumbs
+		        	var thumbnailTemplate = Handlebars.compile( $('#thumbnail_month_template').html() );
+		        	var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+		        	
+		        	// Render the months in reverse chronological order
+		        	// month[0] = January
+		        	for (var i=11; i >= 0; i--) {
+		        		if (months[i]) {
+			        		var month = {
+			        			name : monthNames[i],
+			        			albums : months[i]
+			        		};
+			        		console.log("Month: ", month);
+			        		html += thumbnailTemplate(month);
+		        		}
+		        	}
+	        	}
+	        	// ... else it's a week album, or the root album
+	        	else {
+	         	var thumbnailTemplate = Handlebars.compile( $('#thumbnail_template').html() );
+	        		_.each(this.model.get("children"), function(subItem) {
+		        		//console.log("AlbumPage.render() thumbnail child: " + subItem.title);
+			        	html += thumbnailTemplate(subItem);
+		        	});
+				}
+				
+	        	// Insert the thumbnail HTML into the DOM
+	        	this.$("#thumbnails").html(html);
 
-	        return this;
+	     		return this;
         }
     });
     
@@ -345,7 +372,7 @@ define(
         },
         
         /**
-         * Actually show the photo caption edit 
+         * Actually show the photo caption edit, after the WYSIWYG rich text editor has loaded.
          */
         renderCaptionEditReal : function(wysihtml5) {
 	        var template = Handlebars.compile( $('#photo_caption_edit_template').html() );

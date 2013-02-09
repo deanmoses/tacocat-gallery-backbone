@@ -83,6 +83,29 @@ a.active:after {
 	}
 }
 
+.album {
+	height: 100%;
+	overflow-y: scroll;
+}
+
+.album.year #thumbnails {
+
+	fieldset {
+		display: block;
+		margin: 1em;
+	}
+	
+	legend {
+		font-weight: bold;
+		font-size: 1.3em;
+		background: white;
+		background: #EEE;
+		border-radius: 1em;
+		padding: 0.3em 1em;
+		width: 100%;
+	}
+}
+
 .thumbnail {
 	margin: 1em;
 	display: inline-block;
@@ -94,11 +117,13 @@ a.active:after {
 	a {
 		display: block;
 	}
-	a:last-child {
+	.title {
 		font-weight: bold;
 	}
+	.summary {
+		margin-top: 0.3em;
+	}
 }
-
 
 .container-table.photo-page {
     display: table;
@@ -235,110 +260,6 @@ a.active:after {
 body:not(.is-site-admin) .admin-controls {
 	display: none;
 }
-
-/*
-.photo-page {
-	width: 100%;
-	margin: auto 0;
-	position: relative;
-	display: inline;
-	
-	.photo-info {
-		position: relative;
-		width: 100%;
-		background: #fff;
-		border-bottom: solid black 2px;
-		padding: 0.5em;
-		
-		.button-group {
-			margin: 0.5em 1em;
-		}
-		
-		h1 {
-            font-family: 'VAGRoundedBT-Regular';
-		    font-size: 1.8em;
-		    letter-spacing: -.02em;
-	        cursor: pointer;
-		}
-		
-		.caption {
-			font-family: Verdana;
-			font-size: 1.3em;
-			max-width: 40em;
-			
-			p {
-				margin-top: 0.5em;
-			}
-		}
-		
-		.admin-controls {
-			position: absolute;
-			bottom: 0;
-			right: 0;
-			font-size: smaller;
-			background: white;
-			//border-top-left-radius: 5px;
-			//border-top: solid gray 1px;
-			//border-left: solid gray 1px;
-			padding-top: 1em;
-			padding-bottom: 1em;
-			padding-right: 2em;
-			padding-left: 1em;
-			
-			a {
-				cursor: pointer;
-				
-				&:hover {
-					text-decoration: underline !important;	
-				}
-			}
-		}
-		
-		&:not(:hover) .admin-controls {
-			display: none;
-		}
-		
-		.caption-edit-controls {
-			input[type=text] {
-				font-family: 'VAGRoundedBT-Regular';
-				font-size: 1.8em;
-				letter-spacing: -.02em;
-				display: block;
-				width: 100%;
-				padding: 0;
-			}
-			textarea {
-				display: block;
-				width: 100%;
-				min-height: 8em;
-				font-family: Verdana;
-				font-size: 1.1em;
-				padding: 0;
-				white-space: pre;
-			}
-		}
-	}
-	
-	&.landscape img {
-		width: 100%;
-	}
-	
-	&.portrait {
-		.photo-info {
-			//float: right;
-			//max-width: 30em;
-		}
-		
-		img {
-			height: 100%;
-		}
-	}
-}
-
-html:not(:hover) .photo-page .photo-info {
-	display: none;
-}
-*/
 
 /*
  * The photo and album captions
